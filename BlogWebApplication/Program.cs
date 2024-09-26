@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
+builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
 
@@ -19,15 +20,15 @@ if (app.Environment.IsDevelopment())
 else
 	app.UseHsts();
 
+app.UseCors("CorsPolicy");
+
+app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
 	ForwardedHeaders = ForwardedHeaders.All
 });
-
-app.UseCors("CorsPolicy");
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
