@@ -10,7 +10,7 @@ public class Post
 
 	[Required(ErrorMessage = "Title is a required field.")]
 	[MaxLength(60, ErrorMessage = "Maximum length for the Title is 60 characters.")]
-	public string Title { get; set; }
+	public string? Title { get; set; }
 
 
 	[Required(ErrorMessage = "Content is a required field.")]
@@ -22,7 +22,7 @@ public class Post
 	public int LikesCount { get; set; }
 	public int ViewsCount { get; set; }
 
-	//[ForeignKey(nameof(User))]
-	public Guid AuthorId { get; set; }
-	//public User? User { get; set; }
+	[ForeignKey(nameof(User))]
+	public string? UserId { get; set; }
+	public User? User { get; set; }
 }
