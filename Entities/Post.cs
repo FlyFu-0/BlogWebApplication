@@ -25,4 +25,6 @@ public class Post
 	[ForeignKey(nameof(User))]
 	public string? UserId { get; set; }
 	public User? User { get; set; }
+
+	public ICollection<Tag> Tag { get; set; } = new List<Tag>();
 }

@@ -14,13 +14,22 @@ public class RepositoryContext : IdentityDbContext<User>
 	{
 		base.OnModelCreating(builder);
 
+		builder.Entity<Post>()
+			.HasMany(p => p.Tag)
+			.WithMany(t => t.Post)
+			.UsingEntity<Dictionary<string, object>>(
+				"PostTag",
+				pt => pt.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
+				pt => pt.HasOne<Post>().WithMany().HasForeignKey("PostId")
+			);
+
 		builder.ApplyConfiguration(new UserConfiguration());
 		builder.ApplyConfiguration(new PostConfiguration());
+		builder.ApplyConfiguration(new TagConfiguration());
 	}
 
 	public DbSet<Post>? Posts { get; set; }
 	public DbSet<Like>? Likes { get; set; }
 	public DbSet<Tag>? Tags { get; set; }
-	public DbSet<PostTag>? PostTags { get; set; }
 	public DbSet<Comment>? Comments { get; set; }
 }

@@ -1,5 +1,5 @@
 ﻿namespace Repository.ModelsRepository;
 
-public interface IPost
+public interface ITagRepository
 {
 }

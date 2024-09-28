@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BlogWebApplication.Migrations
 {
     /// <inheritdoc />
-    public partial class DatabaseCreation : Migration
+    public partial class InitialData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -243,28 +245,46 @@ namespace BlogWebApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostTags",
+                name: "PostTag",
                 columns: table => new
                 {
-                    PostTagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostTags", x => x.PostTagId);
+                    table.PrimaryKey("PK_PostTag", x => new { x.PostId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_PostTags_Posts_PostId",
+                        name: "FK_PostTag_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostTags_Tags_TagId",
+                        name: "FK_PostTag_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "TagId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "29732222-c5aa-4b38-afa9-2a2dcfdaeef3", "Test@test.com", false, false, null, null, null, null, null, false, "534adc4f-d38e-41bb-a69c-523846073a30", false, "Test" },
+                    { "2", 0, "b3ed8f94-78af-4d9a-8be2-e632f1eef101", "Test2@test.com", false, false, null, null, null, null, null, false, "5b8fa7eb-bb13-44d8-a293-128944d998e6", false, "Test2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "PostId", "Content", "CreatedAt", "LikesCount", "Title", "UpdatedAt", "UserId", "ViewsCount" },
+                values: new object[,]
+                {
+                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4038), 0, "TestTitle3", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4039), "2", 0 },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4029), 0, "TestTitle1", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4032), "1", 0 },
+                    { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4036), 0, "TestTitle2", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4037), "1", 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -332,13 +352,8 @@ namespace BlogWebApplication.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTags_PostId",
-                table: "PostTags",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostTags_TagId",
-                table: "PostTags",
+                name: "IX_PostTag_TagId",
+                table: "PostTag",
                 column: "TagId");
         }
 
@@ -367,7 +382,7 @@ namespace BlogWebApplication.Migrations
                 name: "Likes");
 
             migrationBuilder.DropTable(
-                name: "PostTags");
+                name: "PostTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

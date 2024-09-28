@@ -12,8 +12,8 @@ using Repository;
 namespace BlogWebApplication.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240927155835_InitialDate")]
-    partial class InitialDate
+    [Migration("20240928202201_InitialData")]
+    partial class InitialData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,10 +121,10 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(133),
+                            CreatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4029),
                             LikesCount = 0,
                             Title = "TestTitle1",
-                            UpdatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(137),
+                            UpdatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4032),
                             UserId = "1",
                             ViewsCount = 0
                         },
@@ -132,10 +132,10 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(145),
+                            CreatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4036),
                             LikesCount = 0,
                             Title = "TestTitle2",
-                            UpdatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(146),
+                            UpdatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4037),
                             UserId = "1",
                             ViewsCount = 0
                         },
@@ -143,35 +143,13 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(150),
+                            CreatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4038),
                             LikesCount = 0,
                             Title = "TestTitle3",
-                            UpdatedAt = new DateTime(2024, 9, 27, 15, 58, 32, 691, DateTimeKind.Utc).AddTicks(151),
+                            UpdatedAt = new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4039),
                             UserId = "2",
                             ViewsCount = 0
                         });
-                });
-
-            modelBuilder.Entity("Entities.PostTag", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("PostTagId");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("PostTags");
                 });
 
             modelBuilder.Entity("Entities.Tag", b =>
@@ -260,12 +238,12 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b461be31-41d3-4072-8a54-0b21dc018672",
+                            ConcurrencyStamp = "29732222-c5aa-4b38-afa9-2a2dcfdaeef3",
                             Email = "Test@test.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a628af08-8bb5-40e4-91e9-202f66f88c61",
+                            SecurityStamp = "534adc4f-d38e-41bb-a69c-523846073a30",
                             TwoFactorEnabled = false,
                             UserName = "Test"
                         },
@@ -273,12 +251,12 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5c6cec50-a989-4536-b003-4e3acbe60a86",
+                            ConcurrencyStamp = "b3ed8f94-78af-4d9a-8be2-e632f1eef101",
                             Email = "Test2@test.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fba6beb9-35d7-45a3-84ec-0374410704be",
+                            SecurityStamp = "5b8fa7eb-bb13-44d8-a293-128944d998e6",
                             TwoFactorEnabled = false,
                             UserName = "Test2"
                         });
@@ -417,6 +395,21 @@ namespace BlogWebApplication.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PostId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTag");
+                });
+
             modelBuilder.Entity("Entities.Comment", b =>
                 {
                     b.HasOne("Entities.Post", "Post")
@@ -458,25 +451,6 @@ namespace BlogWebApplication.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Entities.PostTag", b =>
-                {
-                    b.HasOne("Entities.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -526,6 +500,21 @@ namespace BlogWebApplication.Migrations
                     b.HasOne("Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.HasOne("Entities.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
