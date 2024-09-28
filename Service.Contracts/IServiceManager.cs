@@ -1,6 +1,6 @@
 ﻿namespace Service.Contracts;
 
-public class IServiceManager
+public interface IServiceManager
 {
 	IPostService PostService { get; }
 	ITagService TagService { get; }

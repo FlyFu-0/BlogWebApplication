@@ -1,5 +1,5 @@
 ﻿namespace Service.Contracts;
 
-public class ITagService
+public interface ITagService
 {
 }

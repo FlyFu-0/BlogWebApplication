@@ -1,5 +1,5 @@
 ﻿namespace Service.Contracts;
 
-public class ILikeService
+public interface ILikeService
 {
 }
