@@ -1,6 +1,8 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Entities;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 
 namespace Service;
 
@@ -8,19 +10,23 @@ public sealed class PostService : IPostService
 {
 	private readonly IRepositoryManager _repository;
 	private readonly ILoggerManager _logger;
+	private readonly IMapper _mapper;
 
-	public PostService(IRepositoryManager repository, ILoggerManager logger)
+	public PostService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
 	{
 		_repository = repository;
 		_logger = logger;
+		_mapper = mapper;
 	}
 
-	public IEnumerable<Post> GetAllPosts(bool trackChanges)
+	public IEnumerable<PostDto> GetAllPosts(bool trackChanges)
 	{
 		try
 		{
 			var posts = _repository.Post.GetAllPosts(trackChanges);
-			return posts;
+			var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
+
+			return postsDto;
 		}
 		catch (Exception ex)
 		{

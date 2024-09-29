@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Service.Contracts;
 
 namespace Service;
@@ -9,11 +10,11 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<ITagService> _tagService;
 	private readonly Lazy<ILikeService> _likeService;
 
-	public ServiceManager(IRepositoryManager repository, ILoggerManager logger)
+	public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
 	{
-		_postService = new Lazy<IPostService>(() => new PostService(repository, logger));
-		_tagService = new Lazy<ITagService>(() => new TagService(repository, logger));
-		_likeService = new Lazy<ILikeService>(() => new LikeService(repository, logger));
+		_postService = new Lazy<IPostService>(() => new PostService(repository, logger, mapper));
+		_tagService = new Lazy<ITagService>(() => new TagService(repository, logger, mapper));
+		_likeService = new Lazy<ILikeService>(() => new LikeService(repository, logger, mapper));
 	}
 
 	public IPostService PostService => _postService.Value;

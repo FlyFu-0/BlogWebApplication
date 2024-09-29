@@ -16,6 +16,8 @@ builder.Services.ConfigureServiceManager();
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddControllers()
 	.AddApplicationPart(typeof(BlogWebApplication.Presentation.AssemblyReference).Assembly);
 

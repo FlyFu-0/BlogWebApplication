@@ -9,7 +9,7 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	{
 	}
 
-	IEnumerable<Post> IPostRepository.GetAllPosts(bool trackChanges)
+	public IEnumerable<Post> GetAllPosts(bool trackChanges)
 		=> FindAll(trackChanges)
 			.OrderBy(c => c.LikesCount)
 			.ToList();

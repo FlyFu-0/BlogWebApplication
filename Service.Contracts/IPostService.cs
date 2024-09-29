@@ -1,8 +1,8 @@
-﻿using Entities;
+﻿using Shared.DataTransferObjects;
 
 namespace Service.Contracts;
 
 public interface IPostService
 {
-	IEnumerable<Post> GetAllPosts(bool trackChanges);
+	IEnumerable<PostDto> GetAllPosts(bool trackChanges);
 }
