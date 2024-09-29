@@ -16,7 +16,8 @@ builder.Services.ConfigureServiceManager();
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+	.AddApplicationPart(typeof(BlogWebApplication.Presentation.AssemblyReference).Assembly);
 
 //Register services above
 var app = builder.Build();
