@@ -37,6 +37,6 @@ public class TagsController : ControllerBase
 
 		var createdTag = _service.TagService.CreateTag(tag);
 
-		return Ok(createdTag);
+		return CreatedAtRoute("TagById", new { id = createdTag.Id }, createdTag);
 	}
 }

@@ -21,6 +21,6 @@ public class LikesControllers : ControllerBase
 		var uid = "1";
 
 		var createdLike = _services.LikeService.CreateLike(postId, uid, trackChanges: false);
-		return Ok(createdLike);
+		return Created(string.Empty, createdLike);
 	}
 }

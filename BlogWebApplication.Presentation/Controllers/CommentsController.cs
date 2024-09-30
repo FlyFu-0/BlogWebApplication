@@ -15,7 +15,7 @@ public class CommentsController : ControllerBase
 		_service = service;
 	}
 
-	[HttpGet("{id:guid}")]
+	[HttpGet("{id:guid}", Name = "CommentById")]
 	public IActionResult GetComment(Guid postId, Guid commentId)
 	{
 		var comment = _service.CommentService.GetComment(postId, commentId, trackChanges: false);
@@ -37,6 +37,6 @@ public class CommentsController : ControllerBase
 		if (comment is null)
 			return BadRequest("CommentCreationDto object is null");
 		var createdComment = _service.CommentService.CreateComment(postId, userId, comment, trackChanges: false);
-		return Ok(createdComment);
+		return CreatedAtRoute("CommentById", new { postId, id = createdComment.Id }, createdComment);
 	}
 }
