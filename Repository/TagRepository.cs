@@ -13,4 +13,8 @@ public class TagRepository : RepositoryBase<Tag>, ITagRepository
 		=> FindAll(trackChanges)
 			.OrderBy(x => x.Name)
 			.ToList();
+
+	public Tag GetTag(Guid tagId, bool trackChanges)
+		=> FindByCondition(t => t.Id.Equals(tagId), trackChanges)
+			.SingleOrDefault();
 }
