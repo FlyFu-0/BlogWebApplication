@@ -25,4 +25,12 @@ public sealed class TagService : ITagService
 
 		return tagsDto;
 	}
+
+	public TagDto GetTag(Guid tagId, bool trackChanges)
+	{
+		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		var tagDto = _mapper.Map<TagDto>(tag);
+
+		return tagDto;
+	}
 }

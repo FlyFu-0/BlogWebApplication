@@ -20,4 +20,11 @@ public class TagController : ControllerBase
 		var tags = _service.TagService.GetAllTags(trackChanges: false);
 		return Ok(tags);
 	}
+
+	[HttpGet("{id:guid}")]
+	public IActionResult GetTag(Guid id)
+	{
+		var tag = _service.TagService.GetTag(id, trackChanges: false);
+		return Ok(tag);
+	}
 }
