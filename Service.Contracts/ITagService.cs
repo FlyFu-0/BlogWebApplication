@@ -1,4 +1,4 @@
-﻿using Shared.DataTransferObjects;
+﻿using Shared.DTO.TagDtos;
 
 namespace Service.Contracts;
 

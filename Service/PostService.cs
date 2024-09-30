@@ -2,7 +2,7 @@
 using Contracts;
 using Entities;
 using Service.Contracts;
-using Shared.DataTransferObjects;
+using Shared.DTO.PostDtos;
 
 namespace Service;
 
@@ -21,17 +21,17 @@ public sealed class PostService : IPostService
 
 	public IEnumerable<PostDto> GetAllPosts(bool trackChanges)
 	{
-		try
-		{
-			var posts = _repository.Post.GetAllPosts(trackChanges);
-			var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
+		var posts = _repository.Post.GetAllPosts(trackChanges);
+		var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
 
-			return postsDto;
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError($"Something went wrong in the {nameof(GetAllPosts)} service method {ex}");
-			throw;
-		}
+		return postsDto;
+	}
+
+	public PostDto GetPost(Guid postId, bool trackChanges)
+	{
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		var postDto = _mapper.Map<PostDto>(post);
+
+		return postDto;
 	}
 }

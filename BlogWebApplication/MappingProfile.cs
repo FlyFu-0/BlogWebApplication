@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities;
-using Shared.DataTransferObjects;
+using Shared.DTO.PostDtos;
+using Shared.DTO.TagDtos;
 
 namespace BlogWebApplication;
 

@@ -17,14 +17,7 @@ public class TagController : ControllerBase
 	[HttpGet]
 	public IActionResult GetTags()
 	{
-		try
-		{
-			var tags = _service.TagService.GetAllTags(trackChanges: false);
-			return Ok(tags);
-		}
-		catch
-		{
-			return StatusCode(500, "Internal Server Error");
-		}
+		var tags = _service.TagService.GetAllTags(trackChanges: false);
+		return Ok(tags);
 	}
 }

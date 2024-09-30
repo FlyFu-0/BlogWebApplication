@@ -17,14 +17,14 @@ public class PostController : ControllerBase
 	[HttpGet]
 	public IActionResult GetPosts()
 	{
-		try
-		{
-			var posts = _service.PostService.GetAllPosts(trackChanges: false);
-			return Ok(posts);
-		}
-		catch
-		{
-			return StatusCode(500, "Internal Server Error");
-		}
+		var posts = _service.PostService.GetAllPosts(trackChanges: false);
+		return Ok(posts);
+	}
+
+	[HttpGet("{id:guid}")]
+	public IActionResult GetPost(Guid id)
+	{
+		var post = _service.PostService.GetPost(id, trackChanges: false);
+		return Ok(post);
 	}
 }
