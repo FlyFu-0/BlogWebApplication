@@ -3,13 +3,13 @@ using Service.Contracts;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/tags")]
 [ApiController]
-public class TagController : ControllerBase
+public class TagsController : ControllerBase
 {
 	private readonly IServiceManager _service;
 
-	public TagController(IServiceManager service)
+	public TagsController(IServiceManager service)
 	{
 		_service = service;
 	}

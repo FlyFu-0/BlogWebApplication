@@ -15,7 +15,7 @@ public class RepositoryContext : IdentityDbContext<User>
 		base.OnModelCreating(builder);
 
 		builder.Entity<Post>()
-			.HasMany(p => p.Tag)
+			.HasMany(p => p.Tags)
 			.WithMany(t => t.Post)
 			.UsingEntity<Dictionary<string, object>>(
 				"PostTag",

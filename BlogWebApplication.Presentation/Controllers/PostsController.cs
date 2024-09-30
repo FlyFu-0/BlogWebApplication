@@ -3,13 +3,13 @@ using Service.Contracts;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/posts")]
 [ApiController]
-public class PostController : ControllerBase
+public class PostsController : ControllerBase
 {
 	private readonly IServiceManager _service;
 
-	public PostController(IServiceManager service)
+	public PostsController(IServiceManager service)
 	{
 		_service = service;
 	}
