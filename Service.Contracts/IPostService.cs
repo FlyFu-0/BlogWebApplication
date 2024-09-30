@@ -7,4 +7,6 @@ public interface IPostService
 	IEnumerable<PostDto> GetAllPosts(bool trackChanges);
 
 	PostDto GetPost(Guid postId, bool trackChanges);
+
+	PostDto CreatePost(PostCreationDto post);
 }

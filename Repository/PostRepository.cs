@@ -17,4 +17,7 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	public Post GetPost(Guid postId, bool trackChanges)
 		=> FindByCondition(p => p.Id.Equals(postId), trackChanges)
 			.SingleOrDefault();
+
+	public void CreatePost(Post post)
+		=> Create(post);
 }

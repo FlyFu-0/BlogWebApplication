@@ -12,6 +12,8 @@ public class MappingProfile : Profile
 	public MappingProfile()
 	{
 		CreateMap<Post, PostDto>();
+		CreateMap<PostCreationDto, Post>();
+
 		CreateMap<Tag, TagDto>();
 		CreateMap<Comment, CommentDto>();
 		CreateMap<User, UserDto>();

@@ -37,4 +37,16 @@ public sealed class PostService : IPostService
 
 		return postDto;
 	}
+
+	public PostDto CreatePost(PostCreationDto post)
+	{
+		var postEntity = _mapper.Map<Post>(post);
+
+		_repository.Post.CreatePost(postEntity);
+		_repository.Save();
+
+		var postToReturn = _mapper.Map<PostDto>(postEntity);
+
+		return postToReturn;
+	}
 }

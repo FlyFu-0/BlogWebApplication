@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DTO.PostDtos;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -21,10 +22,21 @@ public class PostsController : ControllerBase
 		return Ok(posts);
 	}
 
-	[HttpGet("{id:guid}")]
+	[HttpGet("{id:guid}", Name = "PostById")]
 	public IActionResult GetPost(Guid id)
 	{
 		var post = _service.PostService.GetPost(id, trackChanges: false);
 		return Ok(post);
+	}
+
+	[HttpPost]
+	public IActionResult CreatePost([FromBody] PostCreationDto post)
+	{
+		if (post is null)
+			return BadRequest("PostCreationDto object is null");
+
+		var createdPost = _service.PostService.CreatePost(post);
+
+		return CreatedAtRoute("PostById", new { id = createdPost.Id }, createdPost);
 	}
 }
