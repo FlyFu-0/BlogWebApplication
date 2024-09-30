@@ -8,5 +8,5 @@ public interface IServiceManager
 
 	ICommentService CommentService { get; }
 
-	//IUserService
+	IUserService UserService { get; }
 }

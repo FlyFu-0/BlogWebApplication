@@ -18,7 +18,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
 				UpdatedAt = DateTime.UtcNow,
 				LikesCount = 0,
 				ViewsCount = 0,
-				UserId = "1"
+				UserId = "1",
 			},
 			new Post
 			{
