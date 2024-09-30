@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
 
@@ -18,19 +19,21 @@ public class CommentService : ICommentService
 		_mapper = mapper;
 	}
 
-	public CommentDto GetComment(Guid commentId, bool trackChanges)
-	{
-		var comment = _repository.Comment.GetComment(commentId, trackChanges);
-		var commentDto = _mapper.Map<CommentDto>(comment);
-
-		return commentDto;
-	}
-
 	public IEnumerable<CommentDto> GetPostComments(Guid postId, bool trackChanges)
 	{
 		var commets = _repository.Comment.GetPostComments(postId, trackChanges: false);
 		var commentsDto = _mapper.Map<IEnumerable<CommentDto>>(commets);
 
 		return commentsDto;
+	}
+
+	public CommentDto GetComment(Guid commentId, bool trackChanges)
+	{
+		var comment = _repository.Comment.GetComment(commentId, trackChanges);
+		if (comment is null)
+			throw new CommentNotFoundException(commentId);
+		var commentDto = _mapper.Map<CommentDto>(comment);
+
+		return commentDto;
 	}
 }

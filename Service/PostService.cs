@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities;
+using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.PostDtos;
 
@@ -30,6 +31,8 @@ public sealed class PostService : IPostService
 	public PostDto GetPost(Guid postId, bool trackChanges)
 	{
 		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
 		var postDto = _mapper.Map<PostDto>(post);
 
 		return postDto;
