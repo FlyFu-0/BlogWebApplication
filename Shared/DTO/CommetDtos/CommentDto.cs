@@ -2,4 +2,4 @@
 
 namespace Shared.DTO.CommetDtos;
 
-public record CommentDto(Guid Id, string Content, UserDto User, DateTime CreatedAt);
+public record CommentDto(Guid Id, string Content, string UserId, DateTime CreatedAt);

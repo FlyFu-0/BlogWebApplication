@@ -8,5 +8,5 @@ public interface ICommentRepository
 
 	Comment GetComment(Guid commentId, bool trackChanges);
 
-	void CreateComment(Guid postId, Comment comment);
+	void CreateComment(Guid postId, string userId, Comment comment);
 }

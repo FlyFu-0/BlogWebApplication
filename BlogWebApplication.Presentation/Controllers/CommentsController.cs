@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DTO.CommetDtos;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -26,5 +27,16 @@ public class CommentsController : ControllerBase
 	{
 		var comments = _service.CommentService.GetPostComments(postId, trackChanges: false);
 		return Ok(comments);
+	}
+
+	[HttpPost]
+	public IActionResult CreateComment(Guid postId, [FromBody] CommentCreationDto comment)
+	{
+		var userId = "1";
+
+		if (comment is null)
+			return BadRequest("CommentCreationDto object is null");
+		var createdComment = _service.CommentService.CreateComment(postId, userId, comment, trackChanges: false);
+		return Ok(createdComment);
 	}
 }

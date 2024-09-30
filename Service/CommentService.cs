@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities;
 using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
@@ -43,5 +44,25 @@ public class CommentService : ICommentService
 		var commentDto = _mapper.Map<CommentDto>(comment);
 
 		return commentDto;
+	}
+
+	public CommentDto CreateComment(Guid postId, string userId, CommentCreationDto comment, bool trackChanges)
+	{
+		var user = _repository.User.GetUser(userId, trackChanges);
+		if (user is null)
+			throw new UserNotFoundException(userId);
+		
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		var commentEntity = _mapper.Map<Comment>(comment);
+
+		_repository.Comment.CreateComment(postId, userId, commentEntity);
+		_repository.Save();
+
+		var commentToReturn = _mapper.Map<CommentDto>(commentEntity);
+
+		return commentToReturn;
 	}
 }

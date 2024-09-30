@@ -9,6 +9,13 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 	{
 	}
 
+	public void CreateComment(Guid postId, string userId, Comment comment)
+	{
+		comment.UserId = userId;
+		comment.PostId = postId;
+		Create(comment);
+	}
+
 	public Comment GetComment(Guid commentId, bool trackChanges)
 		=> FindByCondition(c => c.Id.Equals(commentId), trackChanges)
 			.SingleOrDefault();

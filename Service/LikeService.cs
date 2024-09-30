@@ -22,6 +22,10 @@ public sealed class LikeService : ILikeService
 
 	public LikeDto CreateLike(Guid postId, string userId, bool trackChanges)
 	{
+		var user = _repository.User.GetUser(userId, trackChanges);
+		if (user is null)
+			throw new UserNotFoundException(userId);
+
 		var post = _repository.Post.GetPost(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
