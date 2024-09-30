@@ -21,14 +21,22 @@ public class CommentService : ICommentService
 
 	public IEnumerable<CommentDto> GetPostComments(Guid postId, bool trackChanges)
 	{
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
 		var commets = _repository.Comment.GetPostComments(postId, trackChanges: false);
 		var commentsDto = _mapper.Map<IEnumerable<CommentDto>>(commets);
 
 		return commentsDto;
 	}
 
-	public CommentDto GetComment(Guid commentId, bool trackChanges)
+	public CommentDto GetComment(Guid postId, Guid commentId, bool trackChanges)
 	{
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
 		var comment = _repository.Comment.GetComment(commentId, trackChanges);
 		if (comment is null)
 			throw new CommentNotFoundException(commentId);

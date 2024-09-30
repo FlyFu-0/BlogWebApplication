@@ -22,7 +22,10 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(config =>
+{
+	config.ReturnHttpNotAcceptable = true;
+})
 	.AddApplicationPart(typeof(BlogWebApplication.Presentation.AssemblyReference).Assembly);
 
 //Register services above

@@ -4,7 +4,7 @@ namespace Service.Contracts;
 
 public interface ICommentService
 {
-	CommentDto GetComment(Guid commentId, bool trackChanges);
+	CommentDto GetComment(Guid postId, Guid commentId, bool trackChanges);
 
 	IEnumerable<CommentDto> GetPostComments(Guid postId, bool trackChanges);
 }

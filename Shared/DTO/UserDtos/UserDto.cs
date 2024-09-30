@@ -1,3 +1,3 @@
 ﻿namespace Shared.DTO.UserDtos;
 
-public record UserDto(Guid Id, string Username, string Email);
+public record UserDto(string Id, string UserName, string Email);
