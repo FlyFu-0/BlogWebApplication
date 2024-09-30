@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DTO.TagDtos;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -21,10 +22,21 @@ public class TagsController : ControllerBase
 		return Ok(tags);
 	}
 
-	[HttpGet("{id:guid}")]
+	[HttpGet("{id:guid}", Name = "TagById")]
 	public IActionResult GetTag(Guid id)
 	{
 		var tag = _service.TagService.GetTag(id, trackChanges: false);
 		return Ok(tag);
+	}
+
+	[HttpPost]
+	public IActionResult CreateTag([FromBody] TagCreationDto tag)
+	{
+		if (tag is null)
+			return BadRequest("TagCreationDto object is null");
+
+		var createdTag = _service.TagService.CreateTag(tag);
+
+		return Ok(createdTag);
 	}
 }

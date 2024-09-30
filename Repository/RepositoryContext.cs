@@ -23,9 +23,17 @@ public class RepositoryContext : IdentityDbContext<User>
 				pt => pt.HasOne<Post>().WithMany().HasForeignKey("PostId")
 			);
 
-		//builder.Entity<Dictionary<string, object>>("PostTag").HasData(
-	//		new Dictionary<string, object> { ["PostId"] = "80abbca8-664d-4b20-b5de-024705497d4a", ["TagId"] = "03ea7b96-ef91-4278-bb6e-fbde888775eb" }
-		//	);
+		builder.Entity<Post>()
+			.Property(p => p.CreatedAt)
+			.HasDefaultValueSql("GETDATE()");
+
+		builder.Entity<Comment>()
+			.Property(c => c.CreatedAt)
+			.HasDefaultValueSql("GETDATE()");
+
+		builder.Entity<Like>()
+			.Property(l => l.CreatedAt)
+			.HasDefaultValueSql("GETDATE()");
 
 		builder.ApplyConfiguration(new UserConfiguration());
 		builder.ApplyConfiguration(new PostConfiguration());

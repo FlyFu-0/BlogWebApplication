@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities;
 using Service.Contracts;
 using Shared.DTO.TagDtos;
 
@@ -16,6 +17,18 @@ public sealed class TagService : ITagService
 		_repository = repository;
 		_logger = logger;
 		_mapper = mapper;
+	}
+
+	public TagDto CreateTag(TagCreationDto tag)
+	{
+		var tagEntity = _mapper.Map<Tag>(tag);
+
+		_repository.Tag.CreateTag(tagEntity);
+		_repository.Save();
+
+		var tagToRetun = _mapper.Map<TagDto>(tagEntity);
+
+		return tagToRetun;
 	}
 
 	public IEnumerable<TagDto> GetAllTags(bool trackChanges)

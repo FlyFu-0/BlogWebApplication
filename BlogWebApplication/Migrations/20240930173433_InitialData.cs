@@ -177,7 +177,7 @@ namespace BlogWebApplication.Migrations
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LikesCount = table.Column<int>(type: "int", nullable: false),
                     ViewsCount = table.Column<int>(type: "int", nullable: false),
@@ -199,7 +199,7 @@ namespace BlogWebApplication.Migrations
                 {
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -224,7 +224,7 @@ namespace BlogWebApplication.Migrations
                 columns: table => new
                 {
                     LikeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -273,8 +273,18 @@ namespace BlogWebApplication.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "29732222-c5aa-4b38-afa9-2a2dcfdaeef3", "Test@test.com", false, false, null, null, null, null, null, false, "534adc4f-d38e-41bb-a69c-523846073a30", false, "Test" },
-                    { "2", 0, "b3ed8f94-78af-4d9a-8be2-e632f1eef101", "Test2@test.com", false, false, null, null, null, null, null, false, "5b8fa7eb-bb13-44d8-a293-128944d998e6", false, "Test2" }
+                    { "1", 0, "d5c1b28b-7ce9-4aba-9435-a4ffe3e8c3eb", "Test@test.com", false, false, null, null, null, null, null, false, "1fae115f-75f4-40d4-b3cf-e09992365391", false, "Test" },
+                    { "2", 0, "0cbc05af-081c-4a35-87b9-4bad749edf62", "Test2@test.com", false, false, null, null, null, null, null, false, "70563d0a-c066-4e8d-a728-84537e16ec09", false, "Test2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "TagId", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("03ea7b96-ef91-4278-bb6e-fbde888775eb"), "TestTag2" },
+                    { new Guid("68cb575c-9247-4973-81bc-e5e197711359"), "TestTag3" },
+                    { new Guid("80484fb0-f6ca-40ae-81a0-8cd788d9f084"), "TestTag1" }
                 });
 
             migrationBuilder.InsertData(
@@ -282,9 +292,9 @@ namespace BlogWebApplication.Migrations
                 columns: new[] { "PostId", "Content", "CreatedAt", "LikesCount", "Title", "UpdatedAt", "UserId", "ViewsCount" },
                 values: new object[,]
                 {
-                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4038), 0, "TestTitle3", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4039), "2", 0 },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4029), 0, "TestTitle1", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4032), "1", 0 },
-                    { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4036), 0, "TestTitle2", new DateTime(2024, 9, 28, 20, 22, 1, 52, DateTimeKind.Utc).AddTicks(4037), "1", 0 }
+                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6525), 0, "TestTitle3", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6525), "2", 0 },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6515), 0, "TestTitle1", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6518), "1", 0 },
+                    { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6522), 0, "TestTitle2", new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6523), "1", 0 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -9,6 +9,9 @@ public class TagRepository : RepositoryBase<Tag>, ITagRepository
 	{
 	}
 
+	public void CreateTag(Tag tag)
+		=> Create(tag);
+
 	public IEnumerable<Tag> GetAllTags(bool trackChanges)
 		=> FindAll(trackChanges)
 			.OrderBy(x => x.Name)

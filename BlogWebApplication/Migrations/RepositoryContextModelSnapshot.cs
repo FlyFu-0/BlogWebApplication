@@ -34,7 +34,9 @@ namespace BlogWebApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -59,7 +61,9 @@ namespace BlogWebApplication.Migrations
                         .HasColumnName("LikeId");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
@@ -88,7 +92,9 @@ namespace BlogWebApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("LikesCount")
                         .HasColumnType("int");
@@ -118,10 +124,10 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("80abbca8-664d-4b20-b5de-024705497d4a"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1282),
+                            CreatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6515),
                             LikesCount = 0,
                             Title = "TestTitle1",
-                            UpdatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1288),
+                            UpdatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6518),
                             UserId = "1",
                             ViewsCount = 0
                         },
@@ -129,10 +135,10 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1292),
+                            CreatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6522),
                             LikesCount = 0,
                             Title = "TestTitle2",
-                            UpdatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1292),
+                            UpdatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6523),
                             UserId = "1",
                             ViewsCount = 0
                         },
@@ -140,10 +146,10 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"),
                             Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            CreatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1294),
+                            CreatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6525),
                             LikesCount = 0,
                             Title = "TestTitle3",
-                            UpdatedAt = new DateTime(2024, 9, 29, 20, 22, 25, 470, DateTimeKind.Utc).AddTicks(1295),
+                            UpdatedAt = new DateTime(2024, 9, 30, 17, 34, 32, 670, DateTimeKind.Utc).AddTicks(6525),
                             UserId = "2",
                             ViewsCount = 0
                         });
@@ -252,12 +258,12 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2fb5ae8e-f970-45ce-90df-0cab7abac6aa",
+                            ConcurrencyStamp = "d5c1b28b-7ce9-4aba-9435-a4ffe3e8c3eb",
                             Email = "Test@test.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "885463a8-e19e-4d8c-aa37-2d28cf9623aa",
+                            SecurityStamp = "1fae115f-75f4-40d4-b3cf-e09992365391",
                             TwoFactorEnabled = false,
                             UserName = "Test"
                         },
@@ -265,12 +271,12 @@ namespace BlogWebApplication.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "36119b8d-1a97-4930-b42a-e281b0e1ce4b",
+                            ConcurrencyStamp = "0cbc05af-081c-4a35-87b9-4bad749edf62",
                             Email = "Test2@test.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3db26a39-66c0-4e14-9933-e6d7af84074c",
+                            SecurityStamp = "70563d0a-c066-4e8d-a728-84537e16ec09",
                             TwoFactorEnabled = false,
                             UserName = "Test2"
                         });
