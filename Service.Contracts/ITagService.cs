@@ -9,4 +9,8 @@ public interface ITagService
 	TagDto GetTag(Guid tagId, bool trackChanges);
 
 	TagDto CreateTag(TagCreationDto tag);
+
+	void DeleteTag(Guid tagId, bool trackChanges);
+
+	void UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges);
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities;
+using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.TagDtos;
 
@@ -31,6 +32,16 @@ public sealed class TagService : ITagService
 		return tagToRetun;
 	}
 
+	public void DeleteTag(Guid tagId, bool trackChanges)
+	{
+		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		if (tag is null)
+			throw new TagNotFoundException(tagId);
+
+		_repository.Tag.DeleteTag(tag);
+		_repository.Save();
+	}
+
 	public IEnumerable<TagDto> GetAllTags(bool trackChanges)
 	{
 		var tags = _repository.Tag.GetAllTags(trackChanges);
@@ -45,5 +56,10 @@ public sealed class TagService : ITagService
 		var tagDto = _mapper.Map<TagDto>(tag);
 
 		return tagDto;
+	}
+
+	public void UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges)
+	{
+		throw new NotImplementedException();
 	}
 }

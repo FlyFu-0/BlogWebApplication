@@ -9,4 +9,6 @@ public interface ITagRepository
 	Tag GetTag(Guid tagId, bool trackChanges);
 
 	void CreateTag(Tag tag);
+
+	void DeleteTag(Tag tagId);
 }
