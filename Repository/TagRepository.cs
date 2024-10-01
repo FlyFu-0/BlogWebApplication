@@ -23,4 +23,8 @@ public class TagRepository : RepositoryBase<Tag>, ITagRepository
 	public Tag GetTag(Guid tagId, bool trackChanges)
 		=> FindByCondition(t => t.Id.Equals(tagId), trackChanges)
 			.SingleOrDefault();
+
+	public IEnumerable<Tag> GetTags(IEnumerable<Guid> tagId, bool trackChanges)
+		=> FindByCondition(t => tagId.Contains(t.Id), trackChanges)
+			.ToList();
 }

@@ -20,7 +20,8 @@ public class RepositoryContext : IdentityDbContext<User>
 			.UsingEntity<Dictionary<string, object>>(
 				"PostTag",
 				pt => pt.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
-				pt => pt.HasOne<Post>().WithMany().HasForeignKey("PostId")
+				pt => pt.HasOne<Post>().WithMany().HasForeignKey("PostId"),
+				pt => pt.HasKey("PostId", "TagId")
 			);
 
 		builder.Entity<Post>()

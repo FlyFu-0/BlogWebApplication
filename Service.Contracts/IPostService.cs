@@ -11,4 +11,6 @@ public interface IPostService
 	PostDto CreatePost(PostCreationDto post);
 
 	void DeletePost(string userId, Guid postId, bool trackChanges);
+
+	void UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges);
 }

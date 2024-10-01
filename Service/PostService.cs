@@ -38,9 +38,19 @@ public sealed class PostService : IPostService
 		return postDto;
 	}
 
+	//TODO: Can't add tags to post
 	public PostDto CreatePost(PostCreationDto post)
 	{
 		var postEntity = _mapper.Map<Post>(post);
+
+		//var tags = _repository.Tag.GetTags(post.TagIds, trackChanges: false);
+
+		//var missingTags = post.TagIds.Except(tags.Select(t => t.Id)).ToList();
+
+		//if (missingTags.Any())
+		//	throw new TagNotFoundException(String.Join(", ", missingTags));
+
+		//postEntity.Tags = tags.ToList();
 
 		_repository.Post.CreatePost(postEntity);
 		_repository.Save();
@@ -61,6 +71,16 @@ public sealed class PostService : IPostService
 			throw new PostNotFoundException(postId);
 
 		_repository.Post.DeletePost(post);
+		_repository.Save();
+	}
+
+	public void UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges)
+	{
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		_mapper.Map(postForUpdate, post);
 		_repository.Save();
 	}
 }

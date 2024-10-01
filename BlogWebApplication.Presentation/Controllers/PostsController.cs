@@ -48,4 +48,14 @@ public class PostsController : ControllerBase
 		_service.PostService.DeletePost(userId, id, trackChanges: false);
 		return NoContent();
 	}
+
+	[HttpPut("{id:guid}")]
+	public IActionResult UpdatePost(Guid id, [FromBody] PostUpdateDto post)
+	{
+		if (post is null)
+			return BadRequest("PostUpdateDto object is null");
+
+		_service.PostService.UpdatePost(id, post, trackChanges: true);
+		return NoContent();
+	}
 }
