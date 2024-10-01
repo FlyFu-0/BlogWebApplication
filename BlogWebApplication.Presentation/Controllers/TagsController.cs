@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.TagDtos;
 
@@ -38,5 +39,23 @@ public class TagsController : ControllerBase
 		var createdTag = _service.TagService.CreateTag(tag);
 
 		return CreatedAtRoute("TagById", new { id = createdTag.Id }, createdTag);
+	}
+
+	[HttpDelete("{id:guid}")]
+	public IActionResult DeleteTag(Guid id)
+	{
+		_service.TagService.DeleteTag(id, trackChanges: false);
+
+		return NoContent();
+	}
+
+	[HttpPut("{id:guid}")]
+	public IActionResult UpdateTag(Guid id, TagUpdateDto tag)
+	{
+		if (tag is null)
+			return BadRequest("TagUpdateDto object is null");
+
+		_service.TagService.UpdateTag(id, tag, trackChanges: true);
+		return NoContent();
 	}
 }

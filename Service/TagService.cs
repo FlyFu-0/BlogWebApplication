@@ -60,6 +60,11 @@ public sealed class TagService : ITagService
 
 	public void UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges)
 	{
-		throw new NotImplementedException();
+		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		if (tag is null)
+			throw new TagNotFoundException(tagId);
+
+		_mapper.Map(tagForUpdate, tag);
+		_repository.Save();
 	}
 }
