@@ -84,4 +84,22 @@ public class CommentService : ICommentService
 		_repository.Comment.DeleteComment(comment);
 		_repository.Save();
 	}
+
+	public void UpdatePostComment(Guid postId, string userId, Guid commentId, CommentUpdateDto commentForUpdate, bool postTrackChanges, bool commentTrackChanges)
+	{
+		var user = _repository.User.GetUser(userId, trackChanges: false);
+		if (user is null)
+			throw new UserNotFoundException(userId);
+
+		var post = _repository.Post.GetPost(postId, postTrackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		var comment = _repository.Comment.GetComment(commentId, commentTrackChanges);
+		if (comment is null)
+			throw new CommentNotFoundException(commentId);
+
+		_mapper.Map(commentForUpdate, comment);
+		_repository.Save();
+	}
 }

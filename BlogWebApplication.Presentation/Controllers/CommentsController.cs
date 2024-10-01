@@ -48,4 +48,18 @@ public class CommentsController : ControllerBase
 		_service.CommentService.DeletePostComment(postId, userId, id, trackChanges: false);
 		return NoContent();
 	}
+
+	[HttpPut("{id:guid}")]
+	public IActionResult UpdatePostComment(Guid postId, Guid id, [FromBody] CommentUpdateDto comment)
+	{
+		if (comment is null)
+			return BadRequest("CommentForUpdateDto object is null");
+
+		var userId = "1";
+
+		_service.CommentService.UpdatePostComment(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
+
+		return NoContent();
+	}
+
 }

@@ -11,4 +11,8 @@ public interface ICommentService
 	CommentDto CreateComment(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
 
 	void DeletePostComment(Guid postId, string userId, Guid commentId, bool trackChanges);
+
+	void UpdatePostComment(Guid postId, string userId,
+		Guid commentId, CommentUpdateDto commentForUpdate,
+		bool postTrackChanges, bool commentTrackChanges);
 }

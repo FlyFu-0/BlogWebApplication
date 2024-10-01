@@ -20,6 +20,7 @@ public class MappingProfile : Profile
 
 		CreateMap<Comment, CommentDto>();
 		CreateMap<CommentCreationDto, Comment>();
+		CreateMap<CommentUpdateDto, Comment>();
 
 		CreateMap<Like, LikeDto>();
 		CreateMap<LikeCreationDto, Like>();
