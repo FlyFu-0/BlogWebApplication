@@ -39,4 +39,13 @@ public class PostsController : ControllerBase
 
 		return CreatedAtRoute("PostById", new { id = createdPost.Id }, createdPost);
 	}
+
+	[HttpDelete("{id:guid}")]
+	public IActionResult DeletePost(Guid postId)
+	{
+		var userId = "1";
+
+		_service.PostService.DeletePost(userId, postId, trackChanges: false);
+		return NoContent();
+	}
 }

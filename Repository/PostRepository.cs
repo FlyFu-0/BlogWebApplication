@@ -20,4 +20,7 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 
 	public void CreatePost(Post post)
 		=> Create(post);
+
+	public void DeletePost(Post post)
+		=> Delete(post);
 }

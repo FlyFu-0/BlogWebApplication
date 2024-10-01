@@ -8,4 +8,6 @@ public interface IPostRepository
 	Post GetPost(Guid postId, bool trackChanges);
 
 	void CreatePost(Post post);
+
+	void DeletePost(Post post);
 }

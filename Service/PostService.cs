@@ -49,4 +49,18 @@ public sealed class PostService : IPostService
 
 		return postToReturn;
 	}
+
+	public void DeletePost(string userId, Guid postId, bool trackChanges)
+	{
+		var user = _repository.User.GetUser(userId, trackChanges);
+		if (user is null)
+			throw new UserNotFoundException(userId);
+
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		_repository.Post.DeletePost(post);
+		_repository.Save();
+	}
 }
