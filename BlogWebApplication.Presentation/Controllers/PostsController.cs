@@ -41,11 +41,11 @@ public class PostsController : ControllerBase
 	}
 
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeletePost(Guid postId)
+	public IActionResult DeletePost(Guid id)
 	{
 		var userId = "1";
 
-		_service.PostService.DeletePost(userId, postId, trackChanges: false);
+		_service.PostService.DeletePost(userId, id, trackChanges: false);
 		return NoContent();
 	}
 }
