@@ -20,7 +20,7 @@ public sealed class LikeService : ILikeService
 		_mapper = mapper;
 	}
 
-	public LikeDto CreateLike(Guid postId, string userId, bool trackChanges)
+	public LikeDto ToggleLike(Guid postId, string userId, bool trackChanges)
 	{
 		var user = _repository.User.GetUser(userId, trackChanges);
 		if (user is null)
@@ -30,17 +30,64 @@ public sealed class LikeService : ILikeService
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		//var likeEntity = _mapper.Map<Like>(like);
+		var like = _repository.Like.GetLike(postId, userId, trackChanges);
 
-		_repository.Like.CreateLike(postId, userId);
-		_repository.Save();
+		if (like is null)
+		{
+			_repository.Like.CreateLike(postId, userId);
+			_repository.Save();
 
-		//var likeToReturn = _mapper.Map<LikeDto>(likeEntity);
-		var likeToReturn = new LikeDto(
-			Id: new Guid("19a1c51c-5e7d-4126-80e6-c5c1c162680f"),
-			PostId: postId
-			);
+			var likeToReturn = new LikeDto(PostId: postId);
 
-		return likeToReturn;
+			return likeToReturn;
+		}
+		else
+		{
+			_repository.Like.DeleteLike(like);
+			_repository.Save();
+
+			var likeToReturn = _mapper.Map<LikeDto>(like);
+
+			return likeToReturn;
+		}
 	}
+
+	//public LikeDto CreateLike(Guid postId, string userId, bool trackChanges)
+	//{
+	//	var user = _repository.User.GetUser(userId, trackChanges);
+	//	if (user is null)
+	//		throw new UserNotFoundException(userId);
+
+	//	var post = _repository.Post.GetPost(postId, trackChanges);
+	//	if (post is null)
+	//		throw new PostNotFoundException(postId);
+
+	//	//var likeEntity = _mapper.Map<Like>(like);
+
+	//	_repository.Like.CreateLike(postId, userId);
+	//	_repository.Save();
+
+	//	//var likeToReturn = _mapper.Map<LikeDto>(likeEntity);
+	//	var likeToReturn = new LikeDto(PostId: postId);
+
+	//	return likeToReturn;
+	//}
+
+	//public void DeleteLike(Guid postId, string userId, bool trackChanges)
+	//{
+	//	var user = _repository.User.GetUser(userId, trackChanges);
+	//	if (user is null)
+	//		throw new UserNotFoundException(userId);
+
+	//	var post = _repository.Post.GetPost(postId, trackChanges);
+	//	if (post is null)
+	//		throw new PostNotFoundException(postId);
+
+	//	var like = _repository.Like.GetLike(postId, userId, trackChanges);
+	//	if (like is null)
+	//		throw new Exception("like not found");
+
+	//	_repository.Like.DeleteLike(like);
+	//	_repository.Save();
+	//}
 }

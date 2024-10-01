@@ -16,4 +16,11 @@ public class LikeRepository : RepositoryBase<Like>, ILikeRepository
 		like.PostId = postId;
 		Create(like);
 	}
+
+	public void DeleteLike(Like like)
+		=> Delete(like);
+
+	public Like GetLike(Guid postId, string userId, bool trackChanges)
+		=> FindByCondition(l => l.PostId.Equals(postId) && l.UserId.Equals(userId), trackChanges)
+			.SingleOrDefault();
 }

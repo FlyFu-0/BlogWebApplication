@@ -1,3 +1,3 @@
 ﻿namespace Shared.DTO.LikeDtos;
 
-public record LikeDto(Guid Id, Guid PostId);
+public record LikeDto(Guid PostId);
