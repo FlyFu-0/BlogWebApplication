@@ -51,7 +51,7 @@ public class CommentService : ICommentService
 		var user = _repository.User.GetUser(userId, trackChanges);
 		if (user is null)
 			throw new UserNotFoundException(userId);
-		
+
 		var post = _repository.Post.GetPost(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
@@ -64,5 +64,24 @@ public class CommentService : ICommentService
 		var commentToReturn = _mapper.Map<CommentDto>(commentEntity);
 
 		return commentToReturn;
+	}
+
+	public void DeletePostComment(Guid postId, string userId, Guid commentId, bool trackChanges)
+	{
+		var user = _repository.User.GetUser(userId, trackChanges);
+		if (user is null)
+			throw new UserNotFoundException(userId);
+
+		var post = _repository.Post.GetPost(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		var comment = _repository.Comment.GetComment(commentId, trackChanges);
+
+		if (comment is null)
+			throw new CommentNotFoundException(commentId);
+
+		_repository.Comment.DeleteComment(comment);
+		_repository.Save();
 	}
 }

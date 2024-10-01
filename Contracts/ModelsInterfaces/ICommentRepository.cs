@@ -9,4 +9,6 @@ public interface ICommentRepository
 	Comment GetComment(Guid commentId, bool trackChanges);
 
 	void CreateComment(Guid postId, string userId, Comment comment);
+
+	void DeleteComment(Comment comment);
 }

@@ -9,4 +9,6 @@ public interface ICommentService
 	IEnumerable<CommentDto> GetPostComments(Guid postId, bool trackChanges);
 
 	CommentDto CreateComment(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
+
+	void DeletePostComment(Guid postId, string userId, Guid commentId, bool trackChanges);
 }

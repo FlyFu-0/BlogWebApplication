@@ -16,6 +16,9 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 		Create(comment);
 	}
 
+	public void DeleteComment(Comment comment)
+		=> Delete(comment);
+
 	public Comment GetComment(Guid commentId, bool trackChanges)
 		=> FindByCondition(c => c.Id.Equals(commentId), trackChanges)
 			.SingleOrDefault();
