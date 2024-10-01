@@ -19,8 +19,8 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 	public void DeleteComment(Comment comment)
 		=> Delete(comment);
 
-	public Comment GetComment(Guid commentId, bool trackChanges)
-		=> FindByCondition(c => c.Id.Equals(commentId), trackChanges)
+	public Comment GetComment(Guid postId, Guid commentId, bool trackChanges)
+		=> FindByCondition(c => c.PostId.Equals(postId) && c.Id.Equals(commentId), trackChanges)
 			.SingleOrDefault();
 
 	public IEnumerable<Comment> GetPostComments(Guid postId, bool trackChanges)

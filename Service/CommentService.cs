@@ -38,7 +38,7 @@ public class CommentService : ICommentService
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		var comment = _repository.Comment.GetComment(commentId, trackChanges);
+		var comment = _repository.Comment.GetComment(postId, commentId, trackChanges);
 		if (comment is null)
 			throw new CommentNotFoundException(commentId);
 		var commentDto = _mapper.Map<CommentDto>(comment);
@@ -76,7 +76,7 @@ public class CommentService : ICommentService
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		var comment = _repository.Comment.GetComment(commentId, trackChanges);
+		var comment = _repository.Comment.GetComment(postId, commentId, trackChanges);
 
 		if (comment is null)
 			throw new CommentNotFoundException(commentId);
@@ -95,7 +95,7 @@ public class CommentService : ICommentService
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		var comment = _repository.Comment.GetComment(commentId, commentTrackChanges);
+		var comment = _repository.Comment.GetComment(postId, commentId, commentTrackChanges);
 		if (comment is null)
 			throw new CommentNotFoundException(commentId);
 

@@ -16,9 +16,9 @@ public class CommentsController : ControllerBase
 	}
 
 	[HttpGet("{id:guid}", Name = "CommentById")]
-	public IActionResult GetComment(Guid postId, Guid commentId)
+	public IActionResult GetComment(Guid postId, Guid id)
 	{
-		var comment = _service.CommentService.GetComment(postId, commentId, trackChanges: false);
+		var comment = _service.CommentService.GetComment(postId, id, trackChanges: false);
 		return Ok(comment);
 	}
 

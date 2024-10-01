@@ -6,7 +6,7 @@ public interface ICommentRepository
 {
 	IEnumerable<Comment> GetPostComments(Guid postId, bool trackChanges);
 
-	Comment GetComment(Guid commentId, bool trackChanges);
+	Comment GetComment(Guid postId, Guid commentId, bool trackChanges);
 
 	void CreateComment(Guid postId, string userId, Comment comment);
 
