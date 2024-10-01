@@ -1,3 +1,8 @@
 ﻿namespace Shared.DTO.PostDtos;
 
-public record PostUpdateDto(string Title, string Content, List<Guid> TagIds);
+public record PostUpdateDto
+{
+	public string? Title;
+	public string? Content;
+	public List<Guid>? TagIds;
+}

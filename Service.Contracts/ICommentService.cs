@@ -1,4 +1,5 @@
-﻿using Shared.DTO.CommetDtos;
+﻿using Entities;
+using Shared.DTO.CommetDtos;
 
 namespace Service.Contracts;
 
@@ -15,4 +16,9 @@ public interface ICommentService
 	void UpdatePostComment(Guid postId, string userId,
 		Guid commentId, CommentUpdateDto commentForUpdate,
 		bool postTrackChanges, bool commentTrackChanges);
+
+	(CommentUpdateDto commentToPatch, Comment commentEntity) GetCommentForPatch(Guid postId, Guid commentId,
+		bool postTrackChanges, bool commentTrackChanges);
+
+	void SaveForPatch(CommentUpdateDto commentToPatch, Comment commentEntity);
 }

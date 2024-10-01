@@ -1,4 +1,5 @@
-﻿using Shared.DTO.PostDtos;
+﻿using Entities;
+using Shared.DTO.PostDtos;
 
 namespace Service.Contracts;
 
@@ -13,4 +14,8 @@ public interface IPostService
 	void DeletePost(string userId, Guid postId, bool trackChanges);
 
 	void UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges);
+
+	(PostUpdateDto postToPatch, Post postEntity) GetPostForPatch(Guid postId, bool trackChanges);
+
+	void SaveToPatch(PostUpdateDto postToPatch, Post postEntity);
 }

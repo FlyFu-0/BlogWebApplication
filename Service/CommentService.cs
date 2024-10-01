@@ -102,4 +102,26 @@ public class CommentService : ICommentService
 		_mapper.Map(commentForUpdate, comment);
 		_repository.Save();
 	}
+
+	public (CommentUpdateDto commentToPatch, Comment commentEntity) GetCommentForPatch(Guid postId, Guid commentId,
+		bool postTrackChanges, bool commentTrackChanges)
+	{
+		var post = _repository.Post.GetPost(postId, postTrackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+
+		var commentEntity = _repository.Comment.GetComment(postId, commentId, commentTrackChanges);
+		if (commentEntity is null)
+			throw new PostNotFoundException(commentId);
+
+		var commentToPatch = _mapper.Map<CommentUpdateDto>(commentEntity);
+
+		return (commentToPatch, commentEntity);
+	}
+
+	public void SaveForPatch(CommentUpdateDto commentToPatch, Comment commentEntity)
+	{
+		_mapper.Map(commentToPatch, commentEntity);
+		_repository.Save();
+	}
 }

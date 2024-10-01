@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.PostDtos;
 
@@ -56,6 +57,21 @@ public class PostsController : ControllerBase
 			return BadRequest("PostUpdateDto object is null");
 
 		_service.PostService.UpdatePost(id, post, trackChanges: true);
+		return NoContent();
+	}
+
+	[HttpPatch("{id:guid}")]
+	public IActionResult PartiallyUpdatePost(Guid id, [FromBody] JsonPatchDocument<PostUpdateDto> patchDoc)
+	{
+		if (patchDoc is null)
+			return BadRequest("patchDoc object sent from client is null.");
+
+		var result = _service.PostService.GetPostForPatch(id, trackChanges: true);
+
+		patchDoc.ApplyTo(result.postToPatch);
+
+		_service.PostService.SaveToPatch(result.postToPatch, result.postEntity);
+
 		return NoContent();
 	}
 }

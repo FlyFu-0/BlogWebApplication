@@ -83,4 +83,21 @@ public sealed class PostService : IPostService
 		_mapper.Map(postForUpdate, post);
 		_repository.Save();
 	}
+
+	public (PostUpdateDto postToPatch, Post postEntity) GetPostForPatch(Guid postId, bool trackChanges)
+	{
+		var postEntity = _repository.Post.GetPost(postId, trackChanges);
+		if (postEntity is null)
+			throw new PostNotFoundException(postId);
+
+		var postToPatch = _mapper.Map<PostUpdateDto>(postEntity);
+
+		return (postToPatch, postEntity);
+	}
+
+	public void SaveToPatch(PostUpdateDto postToPatch, Post postEntity)
+	{
+		_mapper.Map(postToPatch, postEntity);
+		_repository.Save();
+	}
 }

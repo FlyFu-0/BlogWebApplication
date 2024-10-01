@@ -14,7 +14,7 @@ public class MappingProfile : Profile
 	{
 		CreateMap<Post, PostDto>();
 		CreateMap<PostCreationDto, Post>();
-		CreateMap<PostUpdateDto, Post>();
+		CreateMap<PostUpdateDto, Post>().ReverseMap();
 
 		CreateMap<Tag, TagDto>();
 		CreateMap<TagCreationDto, Tag>();
@@ -22,7 +22,7 @@ public class MappingProfile : Profile
 
 		CreateMap<Comment, CommentDto>();
 		CreateMap<CommentCreationDto, Comment>();
-		CreateMap<CommentUpdateDto, Comment>();
+		CreateMap<CommentUpdateDto, Comment>().ReverseMap();
 
 		CreateMap<Like, LikeDto>();
 		CreateMap<LikeCreationDto, Like>();

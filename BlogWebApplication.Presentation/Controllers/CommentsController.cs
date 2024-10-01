@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
 
@@ -62,4 +63,18 @@ public class CommentsController : ControllerBase
 		return NoContent();
 	}
 
+	[HttpPatch("{id:guid}")]
+	public IActionResult PartiallyUpdatePostComment(Guid postId, Guid id, [FromBody] JsonPatchDocument<CommentUpdateDto> patchDoc)
+	{
+		if (patchDoc is null)
+			return BadRequest("patchDoc object sent from client is null.");
+
+		var result = _service.CommentService.GetCommentForPatch(postId, id, postTrackChanges: false, commentTrackChanges: true);
+
+		patchDoc.ApplyTo(result.commentToPatch);
+
+		_service.CommentService.SaveForPatch(result.commentToPatch, result.commentEntity);
+
+		return NoContent();
+	}
 }
