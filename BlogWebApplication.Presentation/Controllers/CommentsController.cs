@@ -33,10 +33,14 @@ public class CommentsController : ControllerBase
 	[HttpPost]
 	public IActionResult CreateComment(Guid postId, [FromBody] CommentCreationDto comment)
 	{
-		var userId = "1";
-
 		if (comment is null)
 			return BadRequest("CommentCreationDto object is null");
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
+		var userId = "1";
+
 		var createdComment = _service.CommentService.CreateComment(postId, userId, comment, trackChanges: false);
 		return CreatedAtRoute("CommentById", new { postId, id = createdComment.Id }, createdComment);
 	}
@@ -56,6 +60,9 @@ public class CommentsController : ControllerBase
 		if (comment is null)
 			return BadRequest("CommentForUpdateDto object is null");
 
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
 		var userId = "1";
 
 		_service.CommentService.UpdatePostComment(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
@@ -71,7 +78,12 @@ public class CommentsController : ControllerBase
 
 		var result = _service.CommentService.GetCommentForPatch(postId, id, postTrackChanges: false, commentTrackChanges: true);
 
-		patchDoc.ApplyTo(result.commentToPatch);
+		patchDoc.ApplyTo(result.commentToPatch, ModelState);
+
+		TryValidateModel(result.commentToPatch);
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
 
 		_service.CommentService.SaveForPatch(result.commentToPatch, result.commentEntity);
 

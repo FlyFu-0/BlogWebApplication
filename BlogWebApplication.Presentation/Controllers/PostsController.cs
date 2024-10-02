@@ -36,6 +36,9 @@ public class PostsController : ControllerBase
 		if (post is null)
 			return BadRequest("PostCreationDto object is null");
 
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
 		var userId = "1";
 
 		var createdPost = _service.PostService.CreatePost(userId, post, trackChanges: true);
@@ -58,6 +61,9 @@ public class PostsController : ControllerBase
 		if (post is null)
 			return BadRequest("PostUpdateDto object is null");
 
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
 		_service.PostService.UpdatePost(id, post, trackChanges: true);
 		return NoContent();
 	}
@@ -71,6 +77,11 @@ public class PostsController : ControllerBase
 		var result = _service.PostService.GetPostForPatch(id, trackChanges: true);
 
 		patchDoc.ApplyTo(result.postToPatch);
+
+		TryValidateModel(result.postToPatch);
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
 
 		_service.PostService.SaveToPatch(result.postToPatch, result.postEntity, trackChanges: true);
 
