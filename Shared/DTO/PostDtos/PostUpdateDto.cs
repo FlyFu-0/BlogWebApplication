@@ -2,7 +2,7 @@
 
 public record PostUpdateDto
 {
-	public string? Title;
-	public string? Content;
-	public List<Guid>? TagIds;
+	public string? Title { get; init; }
+	public string? Content { get; init; }
+	public List<Guid>? TagIds { get; init; }
 }

@@ -38,18 +38,20 @@ public sealed class PostService : IPostService
 		return postDto;
 	}
 
-	public PostDto CreatePost(PostCreationDto post, bool trackChanges)
+	public PostDto CreatePost(string userId, PostCreationDto post, bool trackChanges)
 	{
 		var postEntity = _mapper.Map<Post>(post);
 
 		var tags = _repository.Tag.GetTags(post.TagIds, trackChanges);
 
-		var missingTags = post.TagIds.Except(tags.Select(t => t.Id)).ToList();
+		var missingTags = post.TagIds.Except(tags.Select(t => t.Id));
 
 		if (missingTags.Any())
 			throw new TagNotFoundException(String.Join(", ", missingTags));
 
 		postEntity.Tags = tags.ToList();
+
+		postEntity.UserId = userId;
 
 		_repository.Post.CreatePost(postEntity);
 		_repository.Save();
@@ -81,7 +83,7 @@ public sealed class PostService : IPostService
 
 		var tags = _repository.Tag.GetTags(postForUpdate.TagIds, trackChanges);
 
-		var missingTags = postForUpdate.TagIds.Except(tags.Select(t => t.Id)).ToList();
+		var missingTags = postForUpdate.TagIds.Except(tags.Select(t => t.Id));
 
 		if (missingTags.Any())
 			throw new TagNotFoundException(String.Join(", ", missingTags));

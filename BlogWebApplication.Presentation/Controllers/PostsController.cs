@@ -36,7 +36,9 @@ public class PostsController : ControllerBase
 		if (post is null)
 			return BadRequest("PostCreationDto object is null");
 
-		var createdPost = _service.PostService.CreatePost(post, trackChanges: true);
+		var userId = "1";
+
+		var createdPost = _service.PostService.CreatePost(userId, post, trackChanges: true);
 
 		return CreatedAtRoute("PostById", new { id = createdPost.Id }, createdPost);
 	}

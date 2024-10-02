@@ -9,7 +9,7 @@ public interface IPostService
 
 	PostDto GetPost(Guid postId, bool trackChanges);
 
-	PostDto CreatePost(PostCreationDto post, bool trackChanges);
+	PostDto CreatePost(string userId, PostCreationDto post, bool trackChanges);
 
 	void DeletePost(string userId, Guid postId, bool trackChanges);
 
