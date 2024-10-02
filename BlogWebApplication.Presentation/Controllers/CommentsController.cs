@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using BlogWebApplication.Presentation.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
@@ -31,13 +32,11 @@ public class CommentsController : ControllerBase
 	}
 
 	[HttpPost]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> CreateComment(Guid postId, [FromBody] CommentCreationDto comment)
 	{
 		if (comment is null)
 			return BadRequest("CommentCreationDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		var userId = "1";
 
@@ -55,13 +54,11 @@ public class CommentsController : ControllerBase
 	}
 
 	[HttpPut("{id:guid}")]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> UpdatePostComment(Guid postId, Guid id, [FromBody] CommentUpdateDto comment)
 	{
 		if (comment is null)
 			return BadRequest("CommentForUpdateDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		var userId = "1";
 

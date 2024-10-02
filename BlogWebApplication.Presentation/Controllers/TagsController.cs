@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using BlogWebApplication.Presentation.ActionFilters;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.TagDtos;
@@ -31,13 +32,11 @@ public class TagsController : ControllerBase
 	}
 
 	[HttpPost]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> CreateTag([FromBody] TagCreationDto tag)
 	{
 		if (tag is null)
 			return BadRequest("TagCreationDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		var createdTag = await _service.TagService.CreateTag(tag);
 
@@ -53,13 +52,11 @@ public class TagsController : ControllerBase
 	}
 
 	[HttpPut("{id:guid}")]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> UpdateTag(Guid id, TagUpdateDto tag)
 	{
 		if (tag is null)
 			return BadRequest("TagUpdateDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		await _service.TagService.UpdateTag(id, tag, trackChanges: true);
 		return NoContent();

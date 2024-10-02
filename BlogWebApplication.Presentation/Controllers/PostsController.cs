@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using BlogWebApplication.Presentation.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Service.Contracts;
 using Shared.DTO.PostDtos;
 
@@ -31,13 +33,11 @@ public class PostsController : ControllerBase
 	}
 
 	[HttpPost]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> CreatePost([FromBody] PostCreationDto post)
 	{
 		if (post is null)
 			return BadRequest("PostCreationDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		var userId = "1";
 
@@ -56,13 +56,11 @@ public class PostsController : ControllerBase
 	}
 
 	[HttpPut("{id:guid}")]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> UpdatePost(Guid id, [FromBody] PostUpdateDto post)
 	{
 		if (post is null)
 			return BadRequest("PostUpdateDto object is null");
-
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
 
 		await _service.PostService.UpdatePost(id, post, trackChanges: true);
 		return NoContent();
