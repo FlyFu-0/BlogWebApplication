@@ -38,19 +38,18 @@ public sealed class PostService : IPostService
 		return postDto;
 	}
 
-	//TODO: Can't add tags to post
-	public PostDto CreatePost(PostCreationDto post)
+	public PostDto CreatePost(PostCreationDto post, bool trackChanges)
 	{
 		var postEntity = _mapper.Map<Post>(post);
 
-		//var tags = _repository.Tag.GetTags(post.TagIds, trackChanges: false);
+		var tags = _repository.Tag.GetTags(post.TagIds, trackChanges);
 
-		//var missingTags = post.TagIds.Except(tags.Select(t => t.Id)).ToList();
+		var missingTags = post.TagIds.Except(tags.Select(t => t.Id)).ToList();
 
-		//if (missingTags.Any())
-		//	throw new TagNotFoundException(String.Join(", ", missingTags));
+		if (missingTags.Any())
+			throw new TagNotFoundException(String.Join(", ", missingTags));
 
-		//postEntity.Tags = tags.ToList();
+		postEntity.Tags = tags.ToList();
 
 		_repository.Post.CreatePost(postEntity);
 		_repository.Save();
@@ -79,6 +78,15 @@ public sealed class PostService : IPostService
 		var post = _repository.Post.GetPost(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
+
+		var tags = _repository.Tag.GetTags(postForUpdate.TagIds, trackChanges);
+
+		var missingTags = postForUpdate.TagIds.Except(tags.Select(t => t.Id)).ToList();
+
+		if (missingTags.Any())
+			throw new TagNotFoundException(String.Join(", ", missingTags));
+
+		post.Tags = tags.ToList();
 
 		_mapper.Map(postForUpdate, post);
 		_repository.Save();
