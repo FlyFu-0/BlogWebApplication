@@ -17,21 +17,21 @@ public class TagsController : ControllerBase
 	}
 
 	[HttpGet]
-	public IActionResult GetTags()
+	public async Task<IActionResult> GetTags()
 	{
-		var tags = _service.TagService.GetAllTags(trackChanges: false);
+		var tags = await _service.TagService.GetAllTags(trackChanges: false);
 		return Ok(tags);
 	}
 
 	[HttpGet("{id:guid}", Name = "TagById")]
-	public IActionResult GetTag(Guid id)
+	public async Task<IActionResult> GetTag(Guid id)
 	{
-		var tag = _service.TagService.GetTag(id, trackChanges: false);
+		var tag = await _service.TagService.GetTag(id, trackChanges: false);
 		return Ok(tag);
 	}
 
 	[HttpPost]
-	public IActionResult CreateTag([FromBody] TagCreationDto tag)
+	public async Task<IActionResult> CreateTag([FromBody] TagCreationDto tag)
 	{
 		if (tag is null)
 			return BadRequest("TagCreationDto object is null");
@@ -39,21 +39,21 @@ public class TagsController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		var createdTag = _service.TagService.CreateTag(tag);
+		var createdTag = await _service.TagService.CreateTag(tag);
 
 		return CreatedAtRoute("TagById", new { id = createdTag.Id }, createdTag);
 	}
 
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeleteTag(Guid id)
+	public async Task<IActionResult> DeleteTag(Guid id)
 	{
-		_service.TagService.DeleteTag(id, trackChanges: false);
+		await _service.TagService.DeleteTag(id, trackChanges: false);
 
 		return NoContent();
 	}
 
 	[HttpPut("{id:guid}")]
-	public IActionResult UpdateTag(Guid id, TagUpdateDto tag)
+	public async Task<IActionResult> UpdateTag(Guid id, TagUpdateDto tag)
 	{
 		if (tag is null)
 			return BadRequest("TagUpdateDto object is null");
@@ -61,7 +61,7 @@ public class TagsController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		_service.TagService.UpdateTag(id, tag, trackChanges: true);
+		await _service.TagService.UpdateTag(id, tag, trackChanges: true);
 		return NoContent();
 	}
 }

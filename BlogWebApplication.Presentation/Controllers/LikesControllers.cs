@@ -15,11 +15,11 @@ public class LikesControllers : ControllerBase
 	}
 
 	[HttpPost]
-	public IActionResult ToggleLike(Guid postId)
+	public async Task<IActionResult> ToggleLike(Guid postId)
 	{
 		var userId = "1";
 
-		var like = _services.LikeService.ToggleLike(postId, userId, trackChanges: false);
+		var like = await _services.LikeService.ToggleLike(postId, userId, trackChanges: false);
 		return Created(string.Empty, like);
 	}
 }

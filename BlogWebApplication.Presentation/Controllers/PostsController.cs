@@ -17,21 +17,21 @@ public class PostsController : ControllerBase
 	}
 
 	[HttpGet]
-	public IActionResult GetPosts()
+	public async Task<IActionResult> GetPosts()
 	{
-		var posts = _service.PostService.GetAllPosts(trackChanges: false);
+		var posts = await _service.PostService.GetAllPosts(trackChanges: false);
 		return Ok(posts);
 	}
 
 	[HttpGet("{id:guid}", Name = "PostById")]
-	public IActionResult GetPost(Guid id)
+	public async Task<IActionResult> GetPost(Guid id)
 	{
-		var post = _service.PostService.GetPost(id, trackChanges: false);
+		var post = await _service.PostService.GetPost(id, trackChanges: false);
 		return Ok(post);
 	}
 
 	[HttpPost]
-	public IActionResult CreatePost([FromBody] PostCreationDto post)
+	public async Task<IActionResult> CreatePost([FromBody] PostCreationDto post)
 	{
 		if (post is null)
 			return BadRequest("PostCreationDto object is null");
@@ -41,22 +41,22 @@ public class PostsController : ControllerBase
 
 		var userId = "1";
 
-		var createdPost = _service.PostService.CreatePost(userId, post, trackChanges: true);
+		var createdPost = await _service.PostService.CreatePost(userId, post, trackChanges: true);
 
 		return CreatedAtRoute("PostById", new { id = createdPost.Id }, createdPost);
 	}
 
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeletePost(Guid id)
+	public async Task<IActionResult> DeletePost(Guid id)
 	{
 		var userId = "1";
 
-		_service.PostService.DeletePost(userId, id, trackChanges: false);
+		await _service.PostService.DeletePost(userId, id, trackChanges: false);
 		return NoContent();
 	}
 
 	[HttpPut("{id:guid}")]
-	public IActionResult UpdatePost(Guid id, [FromBody] PostUpdateDto post)
+	public async Task<IActionResult> UpdatePost(Guid id, [FromBody] PostUpdateDto post)
 	{
 		if (post is null)
 			return BadRequest("PostUpdateDto object is null");
@@ -64,17 +64,17 @@ public class PostsController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		_service.PostService.UpdatePost(id, post, trackChanges: true);
+		await _service.PostService.UpdatePost(id, post, trackChanges: true);
 		return NoContent();
 	}
 
 	[HttpPatch("{id:guid}")]
-	public IActionResult PartiallyUpdatePost(Guid id, [FromBody] JsonPatchDocument<PostUpdateDto> patchDoc)
+	public async Task<IActionResult> PartiallyUpdatePost(Guid id, [FromBody] JsonPatchDocument<PostUpdateDto> patchDoc)
 	{
 		if (patchDoc is null)
 			return BadRequest("patchDoc object sent from client is null.");
 
-		var result = _service.PostService.GetPostForPatch(id, trackChanges: true);
+		var result = await _service.PostService.GetPostForPatch(id, trackChanges: true);
 
 		patchDoc.ApplyTo(result.postToPatch);
 
@@ -83,7 +83,7 @@ public class PostsController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		_service.PostService.SaveToPatch(result.postToPatch, result.postEntity, trackChanges: true);
+		await _service.PostService.SaveToPatch(result.postToPatch, result.postEntity, trackChanges: true);
 
 		return NoContent();
 	}

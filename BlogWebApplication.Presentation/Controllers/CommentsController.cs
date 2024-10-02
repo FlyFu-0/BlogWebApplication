@@ -17,21 +17,21 @@ public class CommentsController : ControllerBase
 	}
 
 	[HttpGet("{id:guid}", Name = "CommentById")]
-	public IActionResult GetComment(Guid postId, Guid id)
+	public async Task<IActionResult> GetComment(Guid postId, Guid id)
 	{
-		var comment = _service.CommentService.GetCommentAsync(postId, id, trackChanges: false);
+		var comment = await _service.CommentService.GetCommentAsync(postId, id, trackChanges: false);
 		return Ok(comment);
 	}
 
 	[HttpGet]
-	public IActionResult GetPostComments(Guid postId)
+	public async Task<IActionResult> GetPostComments(Guid postId)
 	{
-		var comments = _service.CommentService.GetPostCommentsAsync(postId, trackChanges: false);
+		var comments = await _service.CommentService.GetPostCommentsAsync(postId, trackChanges: false);
 		return Ok(comments);
 	}
 
 	[HttpPost]
-	public IActionResult CreateComment(Guid postId, [FromBody] CommentCreationDto comment)
+	public async Task<IActionResult> CreateComment(Guid postId, [FromBody] CommentCreationDto comment)
 	{
 		if (comment is null)
 			return BadRequest("CommentCreationDto object is null");
@@ -41,21 +41,21 @@ public class CommentsController : ControllerBase
 
 		var userId = "1";
 
-		var createdComment = _service.CommentService.CreateCommentAsync(postId, userId, comment, trackChanges: false);
+		var createdComment = await _service.CommentService.CreateCommentAsync(postId, userId, comment, trackChanges: false);
 		return CreatedAtRoute("CommentById", new { postId, id = createdComment.Id }, createdComment);
 	}
 
 	[HttpDelete("{id:guid}")]
-	public IActionResult DeleteComment(Guid postId, Guid id)
+	public async Task<IActionResult> DeleteComment(Guid postId, Guid id)
 	{
 		var userId = "1";
 
-		_service.CommentService.DeletePostCommentAsync(postId, userId, id, trackChanges: false);
+		await _service.CommentService.DeletePostCommentAsync(postId, userId, id, trackChanges: false);
 		return NoContent();
 	}
 
 	[HttpPut("{id:guid}")]
-	public IActionResult UpdatePostComment(Guid postId, Guid id, [FromBody] CommentUpdateDto comment)
+	public async Task<IActionResult> UpdatePostComment(Guid postId, Guid id, [FromBody] CommentUpdateDto comment)
 	{
 		if (comment is null)
 			return BadRequest("CommentForUpdateDto object is null");
@@ -65,18 +65,18 @@ public class CommentsController : ControllerBase
 
 		var userId = "1";
 
-		_service.CommentService.UpdatePostCommentAsync(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
+		await _service.CommentService.UpdatePostCommentAsync(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
 
 		return NoContent();
 	}
 
 	[HttpPatch("{id:guid}")]
-	public IActionResult PartiallyUpdatePostComment(Guid postId, Guid id, [FromBody] JsonPatchDocument<CommentUpdateDto> patchDoc)
+	public async Task<IActionResult> PartiallyUpdatePostComment(Guid postId, Guid id, [FromBody] JsonPatchDocument<CommentUpdateDto> patchDoc)
 	{
 		if (patchDoc is null)
 			return BadRequest("patchDoc object sent from client is null.");
 
-		var result = _service.CommentService.GetCommentForPatchAsync(postId, id, postTrackChanges: false, commentTrackChanges: true);
+		var result = await _service.CommentService.GetCommentForPatchAsync(postId, id, postTrackChanges: false, commentTrackChanges: true);
 
 		patchDoc.ApplyTo(result.commentToPatch, ModelState);
 
@@ -85,7 +85,7 @@ public class CommentsController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		_service.CommentService.SaveForPatch(result.commentToPatch, result.commentEntity);
+		await _service.CommentService.SaveForPatchAsync(result.commentToPatch, result.commentEntity);
 
 		return NoContent();
 	}

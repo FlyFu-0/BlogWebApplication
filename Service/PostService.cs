@@ -63,16 +63,16 @@ public sealed class PostService : IPostService
 
 	public async Task DeletePost(string userId, Guid postId, bool trackChanges)
 	{
-		var user = _repository.User.GetUserAsync(userId, trackChanges);
+		var user = await _repository.User.GetUserAsync(userId, trackChanges);
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = _repository.Post.GetPostAsync(postId, trackChanges);
+		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
 		_repository.Post.DeletePost(post);
-		_repository.SaveAsync();
+		await _repository.SaveAsync();
 	}
 
 	public async Task UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges)
