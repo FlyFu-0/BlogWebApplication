@@ -17,5 +17,5 @@ public interface IPostService
 
 	(PostUpdateDto postToPatch, Post postEntity) GetPostForPatch(Guid postId, bool trackChanges);
 
-	void SaveToPatch(PostUpdateDto postToPatch, Post postEntity);
+	void SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges);
 }

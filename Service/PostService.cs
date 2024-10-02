@@ -105,8 +105,17 @@ public sealed class PostService : IPostService
 		return (postToPatch, postEntity);
 	}
 
-	public void SaveToPatch(PostUpdateDto postToPatch, Post postEntity)
+	public void SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges)
 	{
+		var tags = _repository.Tag.GetTags(postToPatch.TagIds, trackChanges);
+
+		var missingTags = postToPatch.TagIds.Except(tags.Select(t => t.Id));
+
+		if (missingTags.Any())
+			throw new TagNotFoundException(String.Join(", ", missingTags));
+
+		postEntity.Tags = tags.ToList();
+
 		_mapper.Map(postToPatch, postEntity);
 		_repository.Save();
 	}

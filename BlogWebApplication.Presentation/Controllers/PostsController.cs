@@ -72,7 +72,7 @@ public class PostsController : ControllerBase
 
 		patchDoc.ApplyTo(result.postToPatch);
 
-		_service.PostService.SaveToPatch(result.postToPatch, result.postEntity);
+		_service.PostService.SaveToPatch(result.postToPatch, result.postEntity, trackChanges: true);
 
 		return NoContent();
 	}
