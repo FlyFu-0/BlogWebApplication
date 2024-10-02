@@ -36,6 +36,9 @@ public class TagsController : ControllerBase
 		if (tag is null)
 			return BadRequest("TagCreationDto object is null");
 
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
 		var createdTag = _service.TagService.CreateTag(tag);
 
 		return CreatedAtRoute("TagById", new { id = createdTag.Id }, createdTag);
@@ -54,6 +57,9 @@ public class TagsController : ControllerBase
 	{
 		if (tag is null)
 			return BadRequest("TagUpdateDto object is null");
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
 
 		_service.TagService.UpdateTag(id, tag, trackChanges: true);
 		return NoContent();
