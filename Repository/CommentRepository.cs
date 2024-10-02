@@ -20,11 +20,11 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 	public void DeleteComment(Comment comment)
 		=> Delete(comment);
 
-	public async Task<Comment> GetComment(Guid postId, Guid commentId, bool trackChanges)
+	public async Task<Comment> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges)
 		=> await FindByCondition(c => c.PostId.Equals(postId) && c.Id.Equals(commentId), trackChanges)
 			.SingleOrDefaultAsync();
 
-	public async Task<IEnumerable<Comment>> GetPostComments(Guid postId, bool trackChanges)
+	public async Task<IEnumerable<Comment>> GetPostCommentsAsync(Guid postId, bool trackChanges)
 		=> await FindByCondition(c => c.PostId.Equals(postId), trackChanges)
 			.ToListAsync();
 }

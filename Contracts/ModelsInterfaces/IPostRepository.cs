@@ -4,8 +4,8 @@ namespace Repository.ModelsRepository;
 
 public interface IPostRepository
 {
-	Task<IEnumerable<Post>> GetAllPosts(bool trackChanges);
-	Task<Post> GetPost(Guid postId, bool trackChanges);
+	Task<IEnumerable<Post>> GetAllPostsAsync(bool trackChanges);
+	Task<Post> GetPostAsync(Guid postId, bool trackChanges);
 
 	void CreatePost(Post post);
 

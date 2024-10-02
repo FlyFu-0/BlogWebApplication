@@ -5,17 +5,16 @@ namespace Service.Contracts;
 
 public interface IPostService
 {
-	IEnumerable<PostDto> GetAllPosts(bool trackChanges);
+	Task<IEnumerable<PostDto>> GetAllPosts(bool trackChanges);
 
-	PostDto GetPost(Guid postId, bool trackChanges);
+	Task<PostDto> GetPost(Guid postId, bool trackChanges);
 
-	PostDto CreatePost(string userId, PostCreationDto post, bool trackChanges);
+	Task<PostDto> CreatePost(string userId, PostCreationDto post, bool trackChanges);
 
-	void DeletePost(string userId, Guid postId, bool trackChanges);
+	Task DeletePost(string userId, Guid postId, bool trackChanges);
+	Task UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges);
 
-	void UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges);
+	Task<(PostUpdateDto postToPatch, Post postEntity)> GetPostForPatch(Guid postId, bool trackChanges);
 
-	(PostUpdateDto postToPatch, Post postEntity) GetPostForPatch(Guid postId, bool trackChanges);
-
-	void SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges);
+	Task SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges);
 }

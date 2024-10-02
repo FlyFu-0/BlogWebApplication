@@ -4,13 +4,13 @@ namespace Service.Contracts;
 
 public interface ITagService
 {
-	IEnumerable<TagDto> GetAllTags(bool trackChanges);
+	Task<IEnumerable<TagDto>> GetAllTags(bool trackChanges);
 
-	TagDto GetTag(Guid tagId, bool trackChanges);
+	Task<TagDto> GetTag(Guid tagId, bool trackChanges);
 
-	TagDto CreateTag(TagCreationDto tag);
+	Task<TagDto> CreateTag(TagCreationDto tag);
 
-	void DeleteTag(Guid tagId, bool trackChanges);
+	Task DeleteTag(Guid tagId, bool trackChanges);
 
-	void UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges);
+	Task UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges);
 }

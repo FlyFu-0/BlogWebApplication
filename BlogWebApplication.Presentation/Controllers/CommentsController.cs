@@ -19,14 +19,14 @@ public class CommentsController : ControllerBase
 	[HttpGet("{id:guid}", Name = "CommentById")]
 	public IActionResult GetComment(Guid postId, Guid id)
 	{
-		var comment = _service.CommentService.GetComment(postId, id, trackChanges: false);
+		var comment = _service.CommentService.GetCommentAsync(postId, id, trackChanges: false);
 		return Ok(comment);
 	}
 
 	[HttpGet]
 	public IActionResult GetPostComments(Guid postId)
 	{
-		var comments = _service.CommentService.GetPostComments(postId, trackChanges: false);
+		var comments = _service.CommentService.GetPostCommentsAsync(postId, trackChanges: false);
 		return Ok(comments);
 	}
 
@@ -41,7 +41,7 @@ public class CommentsController : ControllerBase
 
 		var userId = "1";
 
-		var createdComment = _service.CommentService.CreateComment(postId, userId, comment, trackChanges: false);
+		var createdComment = _service.CommentService.CreateCommentAsync(postId, userId, comment, trackChanges: false);
 		return CreatedAtRoute("CommentById", new { postId, id = createdComment.Id }, createdComment);
 	}
 
@@ -50,7 +50,7 @@ public class CommentsController : ControllerBase
 	{
 		var userId = "1";
 
-		_service.CommentService.DeletePostComment(postId, userId, id, trackChanges: false);
+		_service.CommentService.DeletePostCommentAsync(postId, userId, id, trackChanges: false);
 		return NoContent();
 	}
 
@@ -65,7 +65,7 @@ public class CommentsController : ControllerBase
 
 		var userId = "1";
 
-		_service.CommentService.UpdatePostComment(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
+		_service.CommentService.UpdatePostCommentAsync(postId, userId, id, comment, postTrackChanges: false, commentTrackChanges: true);
 
 		return NoContent();
 	}
@@ -76,7 +76,7 @@ public class CommentsController : ControllerBase
 		if (patchDoc is null)
 			return BadRequest("patchDoc object sent from client is null.");
 
-		var result = _service.CommentService.GetCommentForPatch(postId, id, postTrackChanges: false, commentTrackChanges: true);
+		var result = _service.CommentService.GetCommentForPatchAsync(postId, id, postTrackChanges: false, commentTrackChanges: true);
 
 		patchDoc.ApplyTo(result.commentToPatch, ModelState);
 

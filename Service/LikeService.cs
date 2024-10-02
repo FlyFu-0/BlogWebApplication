@@ -19,22 +19,22 @@ public sealed class LikeService : ILikeService
 		_mapper = mapper;
 	}
 
-	public LikeDto ToggleLike(Guid postId, string userId, bool trackChanges)
+	public async Task<LikeDto> ToggleLike(Guid postId, string userId, bool trackChanges)
 	{
-		var user = _repository.User.GetUser(userId, trackChanges);
+		var user = await _repository.User.GetUserAsync(userId, trackChanges);
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = _repository.Post.GetPost(postId, trackChanges);
+		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		var like = _repository.Like.GetLike(postId, userId, trackChanges);
+		var like = await _repository.Like.GetLikeAsync(postId, userId, trackChanges);
 
 		if (like is null)
 		{
 			_repository.Like.CreateLike(postId, userId);
-			_repository.Save();
+			await _repository.SaveAsync();
 
 			var likeToReturn = new LikeDto(PostId: postId);
 
@@ -43,7 +43,7 @@ public sealed class LikeService : ILikeService
 		else
 		{
 			_repository.Like.DeleteLike(like);
-			_repository.Save();
+			await _repository.SaveAsync();
 
 			var likeToReturn = _mapper.Map<LikeDto>(like);
 

@@ -8,5 +8,5 @@ public interface ILikeRepository
 
 	void DeleteLike(Like like);
 
-	Task<Like> GetLike(Guid postId, string userId, bool trackChanges);
+	Task<Like> GetLikeAsync(Guid postId, string userId, bool trackChanges);
 }

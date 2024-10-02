@@ -4,5 +4,5 @@ namespace Service.Contracts;
 
 public interface ILikeService
 {
-	LikeDto ToggleLike(Guid postId, string userId, bool trackChanges);
+	Task<LikeDto> ToggleLike(Guid postId, string userId, bool trackChanges);
 }

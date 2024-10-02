@@ -20,17 +20,17 @@ public sealed class PostService : IPostService
 		_mapper = mapper;
 	}
 
-	public IEnumerable<PostDto> GetAllPosts(bool trackChanges)
+	public async Task<IEnumerable<PostDto>> GetAllPosts(bool trackChanges)
 	{
-		var posts = _repository.Post.GetAllPosts(trackChanges);
+		var posts = await _repository.Post.GetAllPostsAsync(trackChanges);
 		var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
 
 		return postsDto;
 	}
 
-	public PostDto GetPost(Guid postId, bool trackChanges)
+	public async Task<PostDto> GetPost(Guid postId, bool trackChanges)
 	{
-		var post = _repository.Post.GetPost(postId, trackChanges);
+		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
 		var postDto = _mapper.Map<PostDto>(post);
@@ -38,11 +38,11 @@ public sealed class PostService : IPostService
 		return postDto;
 	}
 
-	public PostDto CreatePost(string userId, PostCreationDto post, bool trackChanges)
+	public async Task<PostDto> CreatePost(string userId, PostCreationDto post, bool trackChanges)
 	{
 		var postEntity = _mapper.Map<Post>(post);
 
-		var tags = _repository.Tag.GetTags(post.TagIds, trackChanges);
+		var tags = await _repository.Tag.GetTagsAsync(post.TagIds, trackChanges);
 
 		var missingTags = post.TagIds.Except(tags.Select(t => t.Id));
 
@@ -54,34 +54,34 @@ public sealed class PostService : IPostService
 		postEntity.UserId = userId;
 
 		_repository.Post.CreatePost(postEntity);
-		_repository.Save();
+		await _repository.SaveAsync();
 
 		var postToReturn = _mapper.Map<PostDto>(postEntity);
 
 		return postToReturn;
 	}
 
-	public void DeletePost(string userId, Guid postId, bool trackChanges)
+	public async Task DeletePost(string userId, Guid postId, bool trackChanges)
 	{
-		var user = _repository.User.GetUser(userId, trackChanges);
+		var user = _repository.User.GetUserAsync(userId, trackChanges);
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = _repository.Post.GetPost(postId, trackChanges);
+		var post = _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
 		_repository.Post.DeletePost(post);
-		_repository.Save();
+		_repository.SaveAsync();
 	}
 
-	public void UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges)
+	public async Task UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges)
 	{
-		var post = _repository.Post.GetPost(postId, trackChanges);
+		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
 
-		var tags = _repository.Tag.GetTags(postForUpdate.TagIds, trackChanges);
+		var tags = await _repository.Tag.GetTagsAsync(postForUpdate.TagIds, trackChanges);
 
 		var missingTags = postForUpdate.TagIds.Except(tags.Select(t => t.Id));
 
@@ -91,12 +91,12 @@ public sealed class PostService : IPostService
 		post.Tags = tags.ToList();
 
 		_mapper.Map(postForUpdate, post);
-		_repository.Save();
+		await _repository.SaveAsync();
 	}
 
-	public (PostUpdateDto postToPatch, Post postEntity) GetPostForPatch(Guid postId, bool trackChanges)
+	public async Task<(PostUpdateDto postToPatch, Post postEntity)> GetPostForPatch(Guid postId, bool trackChanges)
 	{
-		var postEntity = _repository.Post.GetPost(postId, trackChanges);
+		var postEntity = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (postEntity is null)
 			throw new PostNotFoundException(postId);
 
@@ -105,9 +105,9 @@ public sealed class PostService : IPostService
 		return (postToPatch, postEntity);
 	}
 
-	public void SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges)
+	public async Task SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges)
 	{
-		var tags = _repository.Tag.GetTags(postToPatch.TagIds, trackChanges);
+		var tags = await _repository.Tag.GetTagsAsync(postToPatch.TagIds, trackChanges);
 
 		var missingTags = postToPatch.TagIds.Except(tags.Select(t => t.Id));
 
@@ -117,6 +117,6 @@ public sealed class PostService : IPostService
 		postEntity.Tags = tags.ToList();
 
 		_mapper.Map(postToPatch, postEntity);
-		_repository.Save();
+		await _repository.SaveAsync();
 	}
 }

@@ -4,7 +4,7 @@ namespace Service.Contracts;
 
 public interface IUserService
 {
-	IEnumerable<UserDto> GetAllUsers(bool trackChanges);
+	Task<IEnumerable<UserDto>> GetAllUsers(bool trackChanges);
 
-	UserDto GetUser(string Id, bool trackChanges);
+	Task<UserDto> GetUser(string Id, bool trackChanges);
 }

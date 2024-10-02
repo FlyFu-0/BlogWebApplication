@@ -20,51 +20,51 @@ public sealed class TagService : ITagService
 		_mapper = mapper;
 	}
 
-	public TagDto CreateTag(TagCreationDto tag)
+	public async Task<TagDto> CreateTag(TagCreationDto tag)
 	{
 		var tagEntity = _mapper.Map<Tag>(tag);
 
 		_repository.Tag.CreateTag(tagEntity);
-		_repository.Save();
+		await _repository.SaveAsync();
 
 		var tagToRetun = _mapper.Map<TagDto>(tagEntity);
 
 		return tagToRetun;
 	}
 
-	public void DeleteTag(Guid tagId, bool trackChanges)
+	public async Task DeleteTag(Guid tagId, bool trackChanges)
 	{
-		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
 		if (tag is null)
 			throw new TagNotFoundException(tagId);
 
 		_repository.Tag.DeleteTag(tag);
-		_repository.Save();
+		await _repository.SaveAsync();
 	}
 
-	public IEnumerable<TagDto> GetAllTags(bool trackChanges)
+	public async Task<IEnumerable<TagDto>> GetAllTags(bool trackChanges)
 	{
-		var tags = _repository.Tag.GetAllTags(trackChanges);
+		var tags = await _repository.Tag.GetAllTagsAsync(trackChanges);
 		var tagsDto = _mapper.Map<IEnumerable<TagDto>>(tags);
 
 		return tagsDto;
 	}
 
-	public TagDto GetTag(Guid tagId, bool trackChanges)
+	public async Task<TagDto> GetTag(Guid tagId, bool trackChanges)
 	{
-		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
 		var tagDto = _mapper.Map<TagDto>(tag);
 
 		return tagDto;
 	}
 
-	public void UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges)
+	public async Task UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges)
 	{
-		var tag = _repository.Tag.GetTag(tagId, trackChanges);
+		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
 		if (tag is null)
 			throw new TagNotFoundException(tagId);
 
 		_mapper.Map(tagForUpdate, tag);
-		_repository.Save();
+		await _repository.SaveAsync();
 	}
 }

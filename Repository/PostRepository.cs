@@ -10,13 +10,13 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	{
 	}
 
-	public async Task<IEnumerable<Post>> GetAllPosts(bool trackChanges)
+	public async Task<IEnumerable<Post>> GetAllPostsAsync(bool trackChanges)
 		=> await FindAll(trackChanges)
 			.OrderBy(c => c.LikesCount)
 			.Include(p => p.Tags)
 			.ToListAsync();
 
-	public async Task<Post> GetPost(Guid postId, bool trackChanges)
+	public async Task<Post> GetPostAsync(Guid postId, bool trackChanges)
 		=> await FindByCondition(p => p.Id.Equals(postId), trackChanges)
 			.Include(p => p.Tags)
 			.SingleOrDefaultAsync();

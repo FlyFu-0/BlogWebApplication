@@ -11,5 +11,5 @@ public interface IRepositoryManager
 	ICommentRepository Comment { get; }
 	IUserRepository User { get; }
 
-	Task Save();
+	Task SaveAsync();
 }

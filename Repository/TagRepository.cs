@@ -16,16 +16,16 @@ public class TagRepository : RepositoryBase<Tag>, ITagRepository
 	public void DeleteTag(Tag tag)
 		=> Delete(tag);
 
-	public async Task<IEnumerable<Tag>> GetAllTags(bool trackChanges)
+	public async Task<IEnumerable<Tag>> GetAllTagsAsync(bool trackChanges)
 		=> await FindAll(trackChanges)
 			.OrderBy(x => x.Name)
 			.ToListAsync();
 
-	public async Task<Tag> GetTag(Guid tagId, bool trackChanges)
+	public async Task<Tag> GetTagAsync(Guid tagId, bool trackChanges)
 		=> await FindByCondition(t => t.Id.Equals(tagId), trackChanges)
 			.SingleOrDefaultAsync();
 
-	public async Task<IEnumerable<Tag>> GetTags(IEnumerable<Guid> tagId, bool trackChanges)
+	public async Task<IEnumerable<Tag>> GetTagsAsync(IEnumerable<Guid> tagId, bool trackChanges)
 		=> await FindByCondition(t => tagId.Contains(t.Id), trackChanges)
 			.ToListAsync();
 }

@@ -4,9 +4,9 @@ namespace Contracts.ModelsInterfaces;
 
 public interface ICommentRepository
 {
-	Task<IEnumerable<Comment>> GetPostComments(Guid postId, bool trackChanges);
+	Task<IEnumerable<Comment>> GetPostCommentsAsync(Guid postId, bool trackChanges);
 
-	Task<Comment> GetComment(Guid postId, Guid commentId, bool trackChanges);
+	Task<Comment> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges);
 
 	void CreateComment(Guid postId, string userId, Comment comment);
 

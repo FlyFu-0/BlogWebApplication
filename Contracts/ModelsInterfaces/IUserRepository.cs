@@ -4,7 +4,7 @@ namespace Contracts.ModelsInterfaces;
 
 public interface IUserRepository
 {
-	Task<IEnumerable<User>> GetAllUsers(bool trackChanges);
+	Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges);
 
-	Task<User> GetUser(string userId, bool trackChanges);
+	Task<User> GetUserAsync(string userId, bool trackChanges);
 }

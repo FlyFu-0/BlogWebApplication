@@ -10,10 +10,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
 	{
 	}
 
-	public async Task<IEnumerable<User>> GetAllUsers(bool trackChanges)
+	public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges)
 		=> await FindAll(trackChanges).ToListAsync();
 
-	public async Task<User> GetUser(string userId, bool trackChanges)
+	public async Task<User> GetUserAsync(string userId, bool trackChanges)
 		=> await FindByCondition(u => u.Id.Equals(userId), trackChanges)
 			.SingleOrDefaultAsync();
 }

@@ -18,17 +18,17 @@ public class UserService : IUserService
 		_mapper = mapper;
 	}
 
-	public IEnumerable<UserDto> GetAllUsers(bool trackChanges)
+	public async Task<IEnumerable<UserDto>> GetAllUsers(bool trackChanges)
 	{
-		var users = _repository.User.GetAllUsers(trackChanges);
+		var users = await _repository.User.GetAllUsersAsync(trackChanges);
 		var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
 
 		return usersDto;
 	}
 
-	public UserDto GetUser(string Id, bool trackChanges)
+	public async Task<UserDto> GetUser(string Id, bool trackChanges)
 	{
-		var users = _repository.User.GetUser(Id, trackChanges);
+		var users = await _repository.User.GetUserAsync(Id, trackChanges);
 		var userDto = _mapper.Map<UserDto>(users);
 
 		return userDto;

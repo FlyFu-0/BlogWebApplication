@@ -5,20 +5,20 @@ namespace Service.Contracts;
 
 public interface ICommentService
 {
-	CommentDto GetComment(Guid postId, Guid commentId, bool trackChanges);
+	Task<CommentDto> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges);
 
-	IEnumerable<CommentDto> GetPostComments(Guid postId, bool trackChanges);
+	Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, bool trackChanges);
 
-	CommentDto CreateComment(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
+	Task<CommentDto> CreateCommentAsync(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
 
-	void DeletePostComment(Guid postId, string userId, Guid commentId, bool trackChanges);
+	Task DeletePostCommentAsync(Guid postId, string userId, Guid commentId, bool trackChanges);
 
-	void UpdatePostComment(Guid postId, string userId,
+	Task UpdatePostCommentAsync(Guid postId, string userId,
 		Guid commentId, CommentUpdateDto commentForUpdate,
 		bool postTrackChanges, bool commentTrackChanges);
 
-	(CommentUpdateDto commentToPatch, Comment commentEntity) GetCommentForPatch(Guid postId, Guid commentId,
+	Task<(CommentUpdateDto commentToPatch, Comment commentEntity)> GetCommentForPatchAsync(Guid postId, Guid commentId,
 		bool postTrackChanges, bool commentTrackChanges);
 
-	void SaveForPatch(CommentUpdateDto commentToPatch, Comment commentEntity);
+	Task SaveForPatchAsync(CommentUpdateDto commentToPatch, Comment commentEntity);
 }

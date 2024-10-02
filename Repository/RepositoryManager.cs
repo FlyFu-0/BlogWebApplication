@@ -29,5 +29,5 @@ public class RepositoryManager : IRepositoryManager
 	public ICommentRepository Comment => _commentRepository.Value;
 	public IUserRepository User => _userRepository.Value;
 
-	public async Task Save() => await _context.SaveChangesAsync();
+	public async Task SaveAsync() => await _context.SaveChangesAsync();
 }
