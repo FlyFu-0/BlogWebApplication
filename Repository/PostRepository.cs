@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Microsoft.EntityFrameworkCore;
 using Repository.ModelsRepository;
+using Shared.RequestFeatures;
 
 namespace Repository;
 
@@ -10,10 +11,12 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	{
 	}
 
-	public async Task<IEnumerable<Post>> GetAllPostsAsync(bool trackChanges)
+	public async Task<IEnumerable<Post>> GetAllPostsAsync(PostParameters postParameters, bool trackChanges)
 		=> await FindAll(trackChanges)
-			.OrderBy(c => c.LikesCount)
 			.Include(p => p.Tags)
+			.OrderBy(c => c.LikesCount)
+			.Skip((postParameters.PageNumber - 1) * postParameters.PageSize)
+			.Take(postParameters.PageSize)
 			.ToListAsync();
 
 	public async Task<Post> GetPostAsync(Guid postId, bool trackChanges)

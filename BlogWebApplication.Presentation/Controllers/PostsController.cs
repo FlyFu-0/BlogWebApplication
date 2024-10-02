@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Service.Contracts;
 using Shared.DTO.PostDtos;
+using Shared.RequestFeatures;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -19,9 +20,9 @@ public class PostsController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetPosts()
+	public async Task<IActionResult> GetPosts([FromQuery] PostParameters postParameters)
 	{
-		var posts = await _service.PostService.GetAllPosts(trackChanges: false);
+		var posts = await _service.PostService.GetAllPosts(postParameters, trackChanges: false);
 		return Ok(posts);
 	}
 

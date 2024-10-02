@@ -4,6 +4,7 @@ using Entities;
 using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.PostDtos;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -20,9 +21,9 @@ public sealed class PostService : IPostService
 		_mapper = mapper;
 	}
 
-	public async Task<IEnumerable<PostDto>> GetAllPosts(bool trackChanges)
+	public async Task<IEnumerable<PostDto>> GetAllPosts(PostParameters postParameters, bool trackChanges)
 	{
-		var posts = await _repository.Post.GetAllPostsAsync(trackChanges);
+		var posts = await _repository.Post.GetAllPostsAsync(postParameters, trackChanges);
 		var postsDto = _mapper.Map<IEnumerable<PostDto>>(posts);
 
 		return postsDto;

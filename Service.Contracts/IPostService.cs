@@ -1,11 +1,12 @@
 ﻿using Entities;
 using Shared.DTO.PostDtos;
+using Shared.RequestFeatures;
 
 namespace Service.Contracts;
 
 public interface IPostService
 {
-	Task<IEnumerable<PostDto>> GetAllPosts(bool trackChanges);
+	Task<IEnumerable<PostDto>> GetAllPosts(PostParameters postParameters, bool trackChanges);
 
 	Task<PostDto> GetPost(Guid postId, bool trackChanges);
 
