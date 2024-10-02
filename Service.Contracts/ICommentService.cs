@@ -8,7 +8,7 @@ public interface ICommentService
 {
 	Task<CommentDto> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges);
 
-	Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, CommentParameters commentParameters, bool trackChanges);
+	Task<(IEnumerable<CommentDto> commentDtos, MetaData metaData)> GetPostCommentsAsync(Guid postId, CommentParameters commentParameters, bool trackChanges);
 
 	Task<CommentDto> CreateCommentAsync(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
 

@@ -21,15 +21,15 @@ public class CommentService : ICommentService
 		_mapper = mapper;
 	}
 
-	public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, 
+	public async Task<(IEnumerable<CommentDto> commentDtos, MetaData metaData)> GetPostCommentsAsync(Guid postId,
 		CommentParameters commentParameters, bool trackChanges)
 	{
 		await CheckIfPostExist(postId, trackChanges);
 
-		var commets = await _repository.Comment.GetPostCommentsAsync(postId, commentParameters, trackChanges: false);
-		var commentsDto = _mapper.Map<IEnumerable<CommentDto>>(commets);
+		var commetsWithMetaData = await _repository.Comment.GetPostCommentsAsync(postId, commentParameters, trackChanges: false);
+		var commentsDtos = _mapper.Map<IEnumerable<CommentDto>>(commetsWithMetaData);
 
-		return commentsDto;
+		return (commentDtos: commentsDtos, metaData: commetsWithMetaData.MetaData);
 	}
 
 	private async Task CheckIfPostExist(Guid postId, bool trackChanges)

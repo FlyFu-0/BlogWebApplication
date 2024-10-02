@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
 using Shared.RequestFeatures;
+using System.Text.Json;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -28,8 +29,12 @@ public class CommentsController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetPostComments(Guid postId, [FromQuery] CommentParameters commentParametrs)
 	{
-		var comments = await _service.CommentService.GetPostCommentsAsync(postId, commentParametrs, trackChanges: false);
-		return Ok(comments);
+		var pagedResult = await _service.CommentService.GetPostCommentsAsync(postId, commentParametrs, trackChanges: false);
+
+		Response.Headers.Add("X-Pagination",
+			JsonSerializer.Serialize(pagedResult.metaData));
+
+		return Ok(pagedResult.commentDtos);
 	}
 
 	[HttpPost]

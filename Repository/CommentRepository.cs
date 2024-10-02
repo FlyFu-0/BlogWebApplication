@@ -1,6 +1,7 @@
 ﻿using Contracts.ModelsInterfaces;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Shared.DTO.CommetDtos;
 using Shared.RequestFeatures;
 
 namespace Repository;
@@ -25,9 +26,12 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 		=> await FindByCondition(c => c.PostId.Equals(postId) && c.Id.Equals(commentId), trackChanges)
 			.SingleOrDefaultAsync();
 
-	public async Task<IEnumerable<Comment>> GetPostCommentsAsync(Guid postId, CommentParameters commentParameters, bool trackChanges)
-		=> await FindByCondition(c => c.PostId.Equals(postId), trackChanges)
-			.Skip((commentParameters.PageNumber - 1) * commentParameters.PageSize)
-			.Take(commentParameters.PageSize)
+	public async Task<PagedList<Comment>> GetPostCommentsAsync(Guid postId, CommentParameters commentParameters, bool trackChanges)
+	{
+		var comments = await FindByCondition(c => c.PostId.Equals(postId), trackChanges)
 			.ToListAsync();
+
+		return PagedList<Comment>
+			.ToPagedList(comments, commentParameters.PageNumber, commentParameters.PageSize);
+	}
 }
