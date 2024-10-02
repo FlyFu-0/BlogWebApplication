@@ -1,3 +1,9 @@
-﻿namespace Shared.DTO.CommetDtos;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record CommentUpdateDto(string Content);
+namespace Shared.DTO.CommetDtos;
+
+public record CommentUpdateDto
+{
+	[Required(ErrorMessage = "Content is a required field.")]
+	public string? Content { get; init; }
+}

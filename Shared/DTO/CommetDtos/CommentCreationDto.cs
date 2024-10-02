@@ -1,3 +1,11 @@
-﻿namespace Shared.DTO.CommetDtos;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record CommentCreationDto(string Content, Guid PostId, string UserId);
+namespace Shared.DTO.CommetDtos;
+
+public record CommentCreationDto
+{
+	[Required(ErrorMessage = "Content is a required field.")]
+	public string? Content { get; init; }
+	public Guid? PostId { get; init; }
+	public string? UserId { get; init; }
+}
