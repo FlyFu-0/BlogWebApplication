@@ -30,24 +30,24 @@ public sealed class PostService : IPostService
 
 	public async Task<PostDto> GetPost(Guid postId, bool trackChanges)
 	{
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		var post = await GetPostAndCheckIfExist(postId, trackChanges);
 		var postDto = _mapper.Map<PostDto>(post);
 
 		return postDto;
 	}
 
+	private async Task<Post?> GetPostAndCheckIfExist(Guid postId, bool trackChanges)
+	{
+		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
+		if (post is null)
+			throw new PostNotFoundException(postId);
+		return post;
+	}
+
 	public async Task<PostDto> CreatePost(string userId, PostCreationDto post, bool trackChanges)
 	{
 		var postEntity = _mapper.Map<Post>(post);
-
-		var tags = await _repository.Tag.GetTagsAsync(post.TagIds, trackChanges);
-
-		var missingTags = post.TagIds.Except(tags.Select(t => t.Id));
-
-		if (missingTags.Any())
-			throw new TagNotFoundException(String.Join(", ", missingTags));
+		var tags = await GetTagsAndCheckIfExist(post.TagIds, trackChanges);
 
 		postEntity.Tags = tags.ToList();
 
@@ -67,9 +67,7 @@ public sealed class PostService : IPostService
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		var post = await GetPostAndCheckIfExist(postId, trackChanges);
 
 		_repository.Post.DeletePost(post);
 		await _repository.SaveAsync();
@@ -77,16 +75,9 @@ public sealed class PostService : IPostService
 
 	public async Task UpdatePost(Guid postId, PostUpdateDto postForUpdate, bool trackChanges)
 	{
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		var post = await GetPostAndCheckIfExist(postId, trackChanges);
 
-		var tags = await _repository.Tag.GetTagsAsync(postForUpdate.TagIds, trackChanges);
-
-		var missingTags = postForUpdate.TagIds.Except(tags.Select(t => t.Id));
-
-		if (missingTags.Any())
-			throw new TagNotFoundException(String.Join(", ", missingTags));
+		var tags = await GetTagsAndCheckIfExist(postForUpdate.TagIds, trackChanges);
 
 		post.Tags = tags.ToList();
 
@@ -94,11 +85,20 @@ public sealed class PostService : IPostService
 		await _repository.SaveAsync();
 	}
 
+	private async Task<IEnumerable<Tag>> GetTagsAndCheckIfExist(IEnumerable<Guid> tagIds, bool trackChanges)
+	{
+		var tags = await _repository.Tag.GetTagsAsync(tagIds, trackChanges);
+
+		var missingTags = tagIds.Except(tags.Select(t => t.Id));
+
+		if (missingTags.Any())
+			throw new TagNotFoundException(String.Join(", ", missingTags));
+		return tags;
+	}
+
 	public async Task<(PostUpdateDto postToPatch, Post postEntity)> GetPostForPatch(Guid postId, bool trackChanges)
 	{
-		var postEntity = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (postEntity is null)
-			throw new PostNotFoundException(postId);
+		var postEntity = await GetPostAndCheckIfExist(postId, trackChanges);
 
 		var postToPatch = _mapper.Map<PostUpdateDto>(postEntity);
 
@@ -107,12 +107,7 @@ public sealed class PostService : IPostService
 
 	public async Task SaveToPatch(PostUpdateDto postToPatch, Post postEntity, bool trackChanges)
 	{
-		var tags = await _repository.Tag.GetTagsAsync(postToPatch.TagIds, trackChanges);
-
-		var missingTags = postToPatch.TagIds.Except(tags.Select(t => t.Id));
-
-		if (missingTags.Any())
-			throw new TagNotFoundException(String.Join(", ", missingTags));
+		var tags = await GetTagsAndCheckIfExist(postToPatch.TagIds, trackChanges);
 
 		postEntity.Tags = tags.ToList();
 

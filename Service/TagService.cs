@@ -34,12 +34,18 @@ public sealed class TagService : ITagService
 
 	public async Task DeleteTag(Guid tagId, bool trackChanges)
 	{
-		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
-		if (tag is null)
-			throw new TagNotFoundException(tagId);
+		var tag = await GetTagAndCheckIfEXist(tagId, trackChanges);
 
 		_repository.Tag.DeleteTag(tag);
 		await _repository.SaveAsync();
+	}
+
+	private async Task<Tag?> GetTagAndCheckIfEXist(Guid tagId, bool trackChanges)
+	{
+		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
+		if (tag is null)
+			throw new TagNotFoundException(tagId);
+		return tag;
 	}
 
 	public async Task<IEnumerable<TagDto>> GetAllTags(bool trackChanges)
@@ -52,7 +58,8 @@ public sealed class TagService : ITagService
 
 	public async Task<TagDto> GetTag(Guid tagId, bool trackChanges)
 	{
-		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
+		var tag = await GetTagAndCheckIfEXist(tagId, trackChanges);
+
 		var tagDto = _mapper.Map<TagDto>(tag);
 
 		return tagDto;
@@ -60,9 +67,7 @@ public sealed class TagService : ITagService
 
 	public async Task UpdateTag(Guid tagId, TagUpdateDto tagForUpdate, bool trackChanges)
 	{
-		var tag = await _repository.Tag.GetTagAsync(tagId, trackChanges);
-		if (tag is null)
-			throw new TagNotFoundException(tagId);
+		var tag = await GetTagAndCheckIfEXist(tagId, trackChanges);
 
 		_mapper.Map(tagForUpdate, tag);
 		await _repository.SaveAsync();

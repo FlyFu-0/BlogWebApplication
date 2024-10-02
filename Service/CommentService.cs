@@ -22,9 +22,7 @@ public class CommentService : ICommentService
 
 	public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, bool trackChanges)
 	{
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		await CheckIfPostExist(postId, trackChanges);
 
 		var commets = await _repository.Comment.GetPostCommentsAsync(postId, trackChanges: false);
 		var commentsDto = _mapper.Map<IEnumerable<CommentDto>>(commets);
@@ -32,19 +30,30 @@ public class CommentService : ICommentService
 		return commentsDto;
 	}
 
-	public async Task<CommentDto> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges)
+	private async Task CheckIfPostExist(Guid postId, bool trackChanges)
 	{
 		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
 		if (post is null)
 			throw new PostNotFoundException(postId);
+	}
 
-		var comment = await _repository.Comment.GetCommentAsync(postId, commentId, trackChanges);
-		if (comment is null)
-			throw new CommentNotFoundException(commentId);
+	public async Task<CommentDto> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges)
+	{
+		await CheckIfPostExist(postId, trackChanges);
+
+		var comment = await GetCommentAndCheckIfExist(postId, commentId, trackChanges);
 
 		var commentDto = _mapper.Map<CommentDto>(comment);
 
 		return commentDto;
+	}
+
+	private async Task<Comment?> GetCommentAndCheckIfExist(Guid postId, Guid commentId, bool commentTrackChanges)
+	{
+		var commentEntity = await _repository.Comment.GetCommentAsync(postId, commentId, commentTrackChanges);
+		if (commentEntity is null)
+			throw new PostNotFoundException(commentId);
+		return commentEntity;
 	}
 
 	public async Task<CommentDto> CreateCommentAsync(Guid postId, string userId, CommentCreationDto comment, bool trackChanges)
@@ -53,9 +62,7 @@ public class CommentService : ICommentService
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		await CheckIfPostExist(postId, trackChanges);
 
 		var commentEntity = _mapper.Map<Comment>(comment);
 
@@ -73,14 +80,9 @@ public class CommentService : ICommentService
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = await _repository.Post.GetPostAsync(postId, trackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		await CheckIfPostExist(postId, trackChanges);
 
-		var comment = await _repository.Comment.GetCommentAsync(postId, commentId, trackChanges);
-
-		if (comment is null)
-			throw new CommentNotFoundException(commentId);
+		var comment = await GetCommentAndCheckIfExist(postId, commentId, trackChanges);
 
 		_repository.Comment.DeleteComment(comment);
 		await _repository.SaveAsync();
@@ -92,13 +94,9 @@ public class CommentService : ICommentService
 		if (user is null)
 			throw new UserNotFoundException(userId);
 
-		var post = await _repository.Post.GetPostAsync(postId, postTrackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		await CheckIfPostExist(postId, postTrackChanges);
 
-		var comment = await _repository.Comment.GetCommentAsync(postId, commentId, commentTrackChanges);
-		if (comment is null)
-			throw new CommentNotFoundException(commentId);
+		var comment = await GetCommentAndCheckIfExist(postId, commentId, commentTrackChanges);
 
 		_mapper.Map(commentForUpdate, comment);
 		await _repository.SaveAsync();
@@ -107,13 +105,9 @@ public class CommentService : ICommentService
 	public async Task<(CommentUpdateDto commentToPatch, Comment commentEntity)> GetCommentForPatchAsync(Guid postId, Guid commentId,
 		bool postTrackChanges, bool commentTrackChanges)
 	{
-		var post = await _repository.Post.GetPostAsync(postId, postTrackChanges);
-		if (post is null)
-			throw new PostNotFoundException(postId);
+		await CheckIfPostExist(postId, postTrackChanges);
 
-		var commentEntity = await _repository.Comment.GetCommentAsync(postId, commentId, commentTrackChanges);
-		if (commentEntity is null)
-			throw new PostNotFoundException(commentId);
+		var commentEntity = await GetCommentAndCheckIfExist(postId, commentId, commentTrackChanges);
 
 		var commentToPatch = _mapper.Map<CommentUpdateDto>(commentEntity);
 
