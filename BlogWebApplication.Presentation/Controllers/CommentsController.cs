@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
+using Shared.RequestFeatures;
 
 namespace BlogWebApplication.Presentation.Controllers;
 
@@ -25,9 +26,9 @@ public class CommentsController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> GetPostComments(Guid postId)
+	public async Task<IActionResult> GetPostComments(Guid postId, [FromQuery] CommentParameters commentParametrs)
 	{
-		var comments = await _service.CommentService.GetPostCommentsAsync(postId, trackChanges: false);
+		var comments = await _service.CommentService.GetPostCommentsAsync(postId, commentParametrs, trackChanges: false);
 		return Ok(comments);
 	}
 

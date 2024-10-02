@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Shared.DTO.CommetDtos;
+using Shared.RequestFeatures;
 
 namespace Service.Contracts;
 
@@ -7,7 +8,7 @@ public interface ICommentService
 {
 	Task<CommentDto> GetCommentAsync(Guid postId, Guid commentId, bool trackChanges);
 
-	Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, bool trackChanges);
+	Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, CommentParameters commentParameters, bool trackChanges);
 
 	Task<CommentDto> CreateCommentAsync(Guid postId, string userId, CommentCreationDto comment, bool trackChanges);
 

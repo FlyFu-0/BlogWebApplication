@@ -4,6 +4,7 @@ using Entities;
 using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DTO.CommetDtos;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -20,11 +21,12 @@ public class CommentService : ICommentService
 		_mapper = mapper;
 	}
 
-	public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, bool trackChanges)
+	public async Task<IEnumerable<CommentDto>> GetPostCommentsAsync(Guid postId, 
+		CommentParameters commentParameters, bool trackChanges)
 	{
 		await CheckIfPostExist(postId, trackChanges);
 
-		var commets = await _repository.Comment.GetPostCommentsAsync(postId, trackChanges: false);
+		var commets = await _repository.Comment.GetPostCommentsAsync(postId, commentParameters, trackChanges: false);
 		var commentsDto = _mapper.Map<IEnumerable<CommentDto>>(commets);
 
 		return commentsDto;
