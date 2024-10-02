@@ -4,11 +4,11 @@ namespace Repository.ModelsRepository;
 
 public interface ITagRepository
 {
-	IEnumerable<Tag> GetAllTags(bool trackChanges);
+	Task<IEnumerable<Tag>> GetAllTags(bool trackChanges);
 
-	Tag GetTag(Guid tagId, bool trackChanges);
+	Task<Tag> GetTag(Guid tagId, bool trackChanges);
 
-	IEnumerable<Tag> GetTags(IEnumerable<Guid> tagIds, bool trackChanges);
+	Task<IEnumerable<Tag>> GetTags(IEnumerable<Guid> tagIds, bool trackChanges);
 
 	void CreateTag(Tag tag);
 

@@ -10,16 +10,16 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	{
 	}
 
-	public IEnumerable<Post> GetAllPosts(bool trackChanges)
-		=> FindAll(trackChanges)
+	public async Task<IEnumerable<Post>> GetAllPosts(bool trackChanges)
+		=> await FindAll(trackChanges)
 			.OrderBy(c => c.LikesCount)
 			.Include(p => p.Tags)
-			.ToList();
+			.ToListAsync();
 
-	public Post GetPost(Guid postId, bool trackChanges)
-		=> FindByCondition(p => p.Id.Equals(postId), trackChanges)
+	public async Task<Post> GetPost(Guid postId, bool trackChanges)
+		=> await FindByCondition(p => p.Id.Equals(postId), trackChanges)
 			.Include(p => p.Tags)
-			.SingleOrDefault();
+			.SingleOrDefaultAsync();
 
 	public void CreatePost(Post post)
 		=> Create(post);

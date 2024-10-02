@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using Repository.ModelsRepository;
 
 namespace Repository;
@@ -15,16 +16,16 @@ public class TagRepository : RepositoryBase<Tag>, ITagRepository
 	public void DeleteTag(Tag tag)
 		=> Delete(tag);
 
-	public IEnumerable<Tag> GetAllTags(bool trackChanges)
-		=> FindAll(trackChanges)
+	public async Task<IEnumerable<Tag>> GetAllTags(bool trackChanges)
+		=> await FindAll(trackChanges)
 			.OrderBy(x => x.Name)
-			.ToList();
+			.ToListAsync();
 
-	public Tag GetTag(Guid tagId, bool trackChanges)
-		=> FindByCondition(t => t.Id.Equals(tagId), trackChanges)
-			.SingleOrDefault();
+	public async Task<Tag> GetTag(Guid tagId, bool trackChanges)
+		=> await FindByCondition(t => t.Id.Equals(tagId), trackChanges)
+			.SingleOrDefaultAsync();
 
-	public IEnumerable<Tag> GetTags(IEnumerable<Guid> tagId, bool trackChanges)
-		=> FindByCondition(t => tagId.Contains(t.Id), trackChanges)
-			.ToList();
+	public async Task<IEnumerable<Tag>> GetTags(IEnumerable<Guid> tagId, bool trackChanges)
+		=> await FindByCondition(t => tagId.Contains(t.Id), trackChanges)
+			.ToListAsync();
 }

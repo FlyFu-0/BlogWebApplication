@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using Repository.ModelsRepository;
 
 namespace Repository;
@@ -20,7 +21,7 @@ public class LikeRepository : RepositoryBase<Like>, ILikeRepository
 	public void DeleteLike(Like like)
 		=> Delete(like);
 
-	public Like GetLike(Guid postId, string userId, bool trackChanges)
-		=> FindByCondition(l => l.PostId.Equals(postId) && l.UserId.Equals(userId), trackChanges)
-			.SingleOrDefault();
+	public async Task<Like> GetLike(Guid postId, string userId, bool trackChanges)
+		=> await FindByCondition(l => l.PostId.Equals(postId) && l.UserId.Equals(userId), trackChanges)
+			.SingleOrDefaultAsync();
 }

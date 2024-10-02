@@ -1,5 +1,6 @@
 ﻿using Contracts.ModelsInterfaces;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
@@ -9,10 +10,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
 	{
 	}
 
-	public IEnumerable<User> GetAllUsers(bool trackChanges)
-		=> FindAll(trackChanges).ToList();
+	public async Task<IEnumerable<User>> GetAllUsers(bool trackChanges)
+		=> await FindAll(trackChanges).ToListAsync();
 
-	public User GetUser(string userId, bool trackChanges)
-		=> FindByCondition(u => u.Id.Equals(userId), trackChanges)
-			.SingleOrDefault();
+	public async Task<User> GetUser(string userId, bool trackChanges)
+		=> await FindByCondition(u => u.Id.Equals(userId), trackChanges)
+			.SingleOrDefaultAsync();
 }

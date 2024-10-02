@@ -1,5 +1,6 @@
 ﻿using Contracts.ModelsInterfaces;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
@@ -19,11 +20,11 @@ public class CommentRepository : RepositoryBase<Comment>, ICommentRepository
 	public void DeleteComment(Comment comment)
 		=> Delete(comment);
 
-	public Comment GetComment(Guid postId, Guid commentId, bool trackChanges)
-		=> FindByCondition(c => c.PostId.Equals(postId) && c.Id.Equals(commentId), trackChanges)
-			.SingleOrDefault();
+	public async Task<Comment> GetComment(Guid postId, Guid commentId, bool trackChanges)
+		=> await FindByCondition(c => c.PostId.Equals(postId) && c.Id.Equals(commentId), trackChanges)
+			.SingleOrDefaultAsync();
 
-	public IEnumerable<Comment> GetPostComments(Guid postId, bool trackChanges)
-		=> FindByCondition(c => c.PostId.Equals(postId), trackChanges)
-			.ToList();
+	public async Task<IEnumerable<Comment>> GetPostComments(Guid postId, bool trackChanges)
+		=> await FindByCondition(c => c.PostId.Equals(postId), trackChanges)
+			.ToListAsync();
 }
