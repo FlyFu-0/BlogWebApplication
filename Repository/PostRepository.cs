@@ -11,13 +11,19 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 	{
 	}
 
-	public async Task<IEnumerable<Post>> GetAllPostsAsync(PostParameters postParameters, bool trackChanges)
-		=> await FindAll(trackChanges)
-			.Include(p => p.Tags)
-			.OrderBy(c => c.LikesCount)
-			.Skip((postParameters.PageNumber - 1) * postParameters.PageSize)
-			.Take(postParameters.PageSize)
-			.ToListAsync();
+	public async Task<PagedList<Post>> GetAllPostsAsync(PostParameters postParameters, bool trackChanges)
+	{
+		var posts = await FindAll(trackChanges)
+				.Include(p => p.Tags)
+				.OrderBy(c => c.LikesCount)
+				.Skip((postParameters.PageNumber - 1) * postParameters.PageSize)
+				.Take(postParameters.PageSize)
+				.ToListAsync();
+
+		var count = await FindAll(trackChanges).CountAsync();
+
+		return new PagedList<Post>(posts, count, postParameters.PageNumber, postParameters.PageSize);
+	}
 
 	public async Task<Post> GetPostAsync(Guid postId, bool trackChanges)
 		=> await FindByCondition(p => p.Id.Equals(postId), trackChanges)
