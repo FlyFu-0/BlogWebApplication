@@ -2,4 +2,5 @@
 
 public class PostParameters : RequestParameters
 {
+	public Guid? TagId { get; set; }
 }

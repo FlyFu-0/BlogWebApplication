@@ -13,7 +13,7 @@ public class PostRepository : RepositoryBase<Post>, IPostRepository
 
 	public async Task<PagedList<Post>> GetAllPostsAsync(PostParameters postParameters, bool trackChanges)
 	{
-		var posts = await FindAll(trackChanges)
+		var posts = await FindByCondition(p => !postParameters.TagId.HasValue || p.Tags.Any(t => postParameters.TagId.Equals(t.Id)), trackChanges)
 				.Include(p => p.Tags)
 				.OrderBy(c => c.LikesCount)
 				.Skip((postParameters.PageNumber - 1) * postParameters.PageSize)
